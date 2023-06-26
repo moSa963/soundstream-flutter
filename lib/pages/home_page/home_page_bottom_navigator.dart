@@ -13,8 +13,8 @@ class HomePageBottomNavigator extends StatelessWidget {
     return BottomNavigationBar(
       currentIndex: index,
       onTap: onChange,
-      selectedItemColor: Theme.of(context).primaryColor,
-      unselectedItemColor: Theme.of(context).primaryColor,
+      selectedItemColor: Theme.of(context).colorScheme.secondary,
+      unselectedItemColor: Theme.of(context).colorScheme.secondary,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
