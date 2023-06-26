@@ -18,10 +18,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(),
       bottomNavigationBar: HomePageBottomNavigator(
         index: _index,
-        onChange: (i) => setState(() {
-          _index = i;
-        }),
+        onChange: onIndexChange,
       ),
     );
+  }
+
+  void onIndexChange(int i) {
+    if (_index == i) return;
+
+    setState(() {
+      _index = i;
+    });
   }
 }
