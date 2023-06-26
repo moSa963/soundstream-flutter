@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundstream_flutter/pages/home_page.dart';
+import 'package:soundstream_flutter/pages/home_page/home_page.dart';
 import 'package:soundstream_flutter/providers/theme_provider.dart';
 
 void main() => runApp(
