@@ -4,7 +4,7 @@ import 'package:soundstream_flutter/models/user.dart';
 
 
 class Track{
-  int id;
+  int? id;
   User? user;
   String title;
   String writtenBy;
@@ -17,7 +17,7 @@ class Track{
   bool explicit;
 
   Track({
-    required this.id,
+    this.id,
     this.title="",
     this.writtenBy="",
     this.performedBy="",
