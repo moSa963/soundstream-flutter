@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 
-
-
 class PlaylistsProvider with ChangeNotifier {
   final List<Playlist> _playlists;
   List<Playlist> get playlists => _playlists;
 
-  PlaylistsProvider() : _playlists=[];
-
+  PlaylistsProvider() : _playlists = [];
 
   void loadPlaylists() async {
     //TODO
@@ -23,10 +20,12 @@ class PlaylistsProvider with ChangeNotifier {
 
   void addPlaylist(Playlist playlist) {
     assert(playlist.id != null);
-    if (playlists.where((element) => element.id == playlist.id).isNotEmpty){
-      playlists.add(playlist);
-      notifyListeners();
+    if (playlists.where((element) => element.id == playlist.id).isNotEmpty) {
+      return;
     }
+
+    playlists.add(playlist);
+    notifyListeners();
   }
 
   void deletePlaylist(Playlist playlist) async {
@@ -48,5 +47,4 @@ class PlaylistsProvider with ChangeNotifier {
     //TODO
     throw UnimplementedError();
   }
-
 }
