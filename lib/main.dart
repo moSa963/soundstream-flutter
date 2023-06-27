@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/pages/home_page/home_page.dart';
+import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/providers/theme_provider.dart';
 
-void main() => runApp(
-  ChangeNotifierProvider<ThemeProvider>(
-    create: (_) => ThemeProvider(),
-    child: const MyApp(),
-  )
-);
+void main() => runApp(ChangeNotifierProvider<ThemeProvider>(
+      create: (_) => ThemeProvider(),
+      child: ChangeNotifierProvider<PlaylistsProvider>(
+        create: (_) => PlaylistsProvider(),
+        child: const MyApp(),
+      ),
+    ));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
