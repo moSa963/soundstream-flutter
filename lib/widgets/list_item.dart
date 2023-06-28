@@ -35,6 +35,7 @@ class ListItem extends StatelessWidget {
         trailing: Wrap(
           children: actions ?? [],
         ),
+        horizontalTitleGap: 10,
       ),
     );
   }
