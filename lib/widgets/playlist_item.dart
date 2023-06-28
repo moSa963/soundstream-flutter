@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
-import 'package:soundstream_flutter/widgets/scale_gesture_detector.dart';
+import 'package:soundstream_flutter/widgets/list_item.dart';
 
 class PlaylistItem extends StatelessWidget {
   final Playlist playlist;
@@ -9,27 +9,13 @@ class PlaylistItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleGestureDetector(
-      child: ListTile(
-        leading: Image.network(
+    return ListItem(
+      leading: Image.network(
           'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
           fit: BoxFit.contain,
         ),
-        title: Text(
-          playlist.title,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: _subtitle(),
-        contentPadding: const EdgeInsets.all(0),
-      ),
+        title: playlist.title,
+        subtitle: "${playlist.album ? "Album" : "Playlist"} . ${playlist.user?.username ?? ""}",
     );
-  }
-
-  Widget _subtitle() {
-    return Text(
-        "${playlist.album ? "Album" : "Playlist"} . ${playlist.user?.username ?? ""}",
-        style: TextStyle(
-          color: Colors.grey[500],
-        ));
   }
 }
