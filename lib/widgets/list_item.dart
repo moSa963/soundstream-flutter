@@ -31,7 +31,7 @@ class ListItem extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: _subtitle(),
-        contentPadding: const EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         trailing: Wrap(
           children: actions ?? [],
         ),
