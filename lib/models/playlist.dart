@@ -12,6 +12,7 @@ class Playlist{
   bool liked;
   int tracksCount;
   bool private;
+  String get imgSrc => 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg';
 
   Playlist({
     this.id,
