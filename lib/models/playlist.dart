@@ -33,9 +33,9 @@ class Playlist {
       album: json['album'] as bool,
       liked: json['liked'] as bool,
       private: json['private'] as bool,
-      tracksCount: json['tracksCount'] as int,
+      tracksCount: json['tracks_count'] as int,
       user: User.fromJson(json['user']),
-      createdAt: json['createdAt'] as DateTime,
+      createdAt: DateTime.tryParse(json['created_at']),
     );
   }
 }

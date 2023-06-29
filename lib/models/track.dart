@@ -32,15 +32,15 @@ class Track {
     return Track(
       id: json['id'] as int,
       title: json['title'] as String,
-      writtenBy: json['writtenBy'] as String,
-      performedBy: json['performedBy'] as String,
+      writtenBy: json['written_by'] as String,
+      performedBy: json['performed_by'] as String,
       album: Playlist.fromJson(json['album']),
       explicit: json['explicit'] as bool,
       liked: json['liked'] as bool,
       duration: json['duration'] as int,
       user: User.fromJson(json['user']),
-      createdAt: json['created_at'] as DateTime,
-      addedAt: json['added_at'] as DateTime,
+      createdAt: DateTime.tryParse(json['created_at']),
+      addedAt: DateTime.tryParse(json['added_at']),
     );
   }
 }
