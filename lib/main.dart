@@ -20,8 +20,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Soundstream',
-      theme: context.watch<ThemeProvider>().themeData,
+      theme: ThemeData(useMaterial3: true),
+      darkTheme: ThemeData.dark(useMaterial3: true),
       home: HomePage(),
+      themeMode: context.watch<ThemeProvider>().themeMode,
     );
   }
 }

@@ -10,13 +10,11 @@ void main() {
   });
 
   test("inital values are correct", () {
-    expect(sut.mode, ThemeMode.light);
-    expect(sut.themeData, ThemeData.light(useMaterial3: true));
+    expect(sut.themeMode, ThemeMode.system);
   });
 
-  test("setThemeMode method sets 'mode' and 'themeData' values", () {
+  test("setThemeMode method sets 'themeMode' value", () {
     sut.setThemeMode(ThemeMode.dark);
-    expect(sut.mode, ThemeMode.dark);
-    expect(sut.themeData, ThemeData.dark(useMaterial3: true));
+    expect(sut.themeMode, ThemeMode.dark);
   });
 }
