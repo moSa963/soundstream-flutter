@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class ScaleGestureDetector extends StatefulWidget {
   const ScaleGestureDetector(
-      {super.key, required this.child, this.onTap, this.onLongPress});
+      {super.key, required this.child, this.onTap, this.onDoubleTap, this.onLongPress});
 
   final Widget child;
   final void Function()? onTap;
+  final void Function()? onDoubleTap;
   final void Function()? onLongPress;
 
   @override
@@ -19,6 +20,7 @@ class _ScaleGestureDetectorState extends State<ScaleGestureDetector> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onTap,
+      onDoubleTap: widget.onDoubleTap,
       onLongPress: widget.onLongPress,
       onTapDown: (_) => setState(() {
         _down = true;

@@ -5,11 +5,11 @@ import 'package:soundstream_flutter/utils/duration_format.dart';
 class AudioProgressBar extends StatelessWidget {
   const AudioProgressBar(
       {super.key,
-      required this.audio,
+      this.audio,
       this.noLabels = false,
       this.noSeek = false,
-      this.trackHeight=5});
-  final AudioPlayer audio;
+      this.trackHeight = 5});
+  final AudioPlayer? audio;
   final bool noLabels;
   final bool noSeek;
   final double trackHeight;
@@ -17,7 +17,7 @@ class AudioProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration?>(
-        stream: audio.positionStream,
+        stream: audio?.positionStream,
         builder: (context, snapshot) {
           return Column(
             children: [
@@ -40,11 +40,11 @@ class AudioProgressBar extends StatelessWidget {
         ),
         child: Slider(
           min: 0,
-          max: audio.duration?.inSeconds.toDouble() ?? 0.0,
+          max: audio?.duration?.inSeconds.toDouble() ?? 0.0,
           value: snapshot.data?.inSeconds.toDouble() ?? 0,
           onChanged: (v) {
             if (noSeek) return;
-            audio.seek(Duration(seconds: v.toInt()));
+            audio?.seek(Duration(seconds: v.toInt()));
           },
         ));
   }
@@ -56,7 +56,7 @@ class AudioProgressBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(DurationFormat.toHms(snapshot.data)),
-          Text(DurationFormat.toHms(audio.duration)),
+          Text(DurationFormat.toHms(audio?.duration)),
         ],
       ),
     );
