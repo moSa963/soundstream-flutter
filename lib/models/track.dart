@@ -14,6 +14,8 @@ class Track {
   int duration;
   bool explicit;
 
+  String get url => "tracks/$id/stream";
+
   Track({
     this.id,
     this.title = "",
