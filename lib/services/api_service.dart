@@ -1,32 +1,55 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
+import 'package:soundstream_flutter/models/api_service_exaption.dart';
 
 class ApiService {
-  static const baseUrl = "http://127.0.0.1:8000";
+  static const _baseUrl = "http://127.0.0.1:8000";
 
-  Future<http.Response> get(String url) async {
-    return http.get(_uri(url), headers: getHeaders());
+  Future<dynamic> get(String url) async {
+    return await _response(http.get(_uri(url), headers: getHeaders()));
   }
 
-   Future<http.Response> post(String url, Map<String, dynamic>? data) async {
-    return http.post(_uri(url), body: data, headers: getHeaders());
-   }
+  Future<dynamic> post(String url, Map<String, dynamic>? data) async {
+    return await _response(
+        http.post(_uri(url), body: data, headers: getHeaders()));
+  }
 
-   Future<http.Response> delete(String url) async {
-    return http.delete(_uri(url), headers: getHeaders());
-   }
+  Future<dynamic> delete(String url) async {
+    return await _response(http.delete(_uri(url), headers: getHeaders()));
+  }
 
-   Future<http.Response> put(String url, Map<String, dynamic>? data) async {
-    return http.put(_uri(url), body: data, headers: getHeaders());
-   }
+  Future<dynamic> put(String url, Map<String, dynamic>? data) async {
+    return await _response(
+        http.put(_uri(url), body: data, headers: getHeaders()));
+  }
 
   Map<String, String> getHeaders() {
     return {
       "Accept": "application/json",
-      "Authorization": "Bearer ",
+      "Authorization": "Bearer 1|LE3ZmYE2qQZsg2XGTQw5yRco5HPky6vY4D0Ck4MR", //temporary 
     };
   }
 
-  Uri _uri(String url){
-    return Uri.parse("$baseUrl/api/$url");
+  Uri _uri(String url) {
+    return Uri.parse("$_baseUrl/api/$url");
+  }
+
+  Future<dynamic> _response(Future<http.Response> response) async {
+    try {
+      final res = await response;
+      final json = jsonDecode(res.body);
+
+      if (!(res.statusCode >= 200 && res.statusCode <= 299)) {
+        throw ApiServiceExaption(
+            status: res.statusCode, message: json["message"]);
+      }
+      return json?["data"];
+    } on SocketException {
+      throw ApiServiceExaption(message: "No Internet connection");
+    } catch (_) {
+      throw ApiServiceExaption(message: "There is something wrong");
+    }
   }
 }
