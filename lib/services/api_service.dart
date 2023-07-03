@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:soundstream_flutter/models/api_service_exaption.dart';
 
 class ApiService {
+  const ApiService();
   static const _baseUrl = "http://127.0.0.1:8000";
 
   Future<Map<String, dynamic>> get(String url) async {

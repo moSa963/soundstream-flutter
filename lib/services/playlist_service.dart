@@ -2,7 +2,8 @@ import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
 
 class PlaylistService {
-  final api = ApiService();
+  const PlaylistService();
+  final api = const ApiService();
 
   Future<List<Playlist>> list() async {
     final js = await api.get("playlists");
