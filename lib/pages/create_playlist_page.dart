@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/models/playlist.dart';
+import 'package:soundstream_flutter/providers/playlists_provider.dart';
 
 class CreatePlaylistPage extends StatefulWidget {
   const CreatePlaylistPage({super.key});
@@ -40,7 +43,8 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
     );
   }
 
-  void _onCreate() {
-    print(inputs["title"]);
+  void _onCreate() async {
+    context.read<PlaylistsProvider>().createPlaylist(Playlist(title: inputs["title"]));
+    Navigator.of(context).pop();
   }
 }
