@@ -7,20 +7,20 @@ import 'package:soundstream_flutter/models/api_service_exaption.dart';
 class ApiService {
   static const _baseUrl = "http://127.0.0.1:8000";
 
-  Future<dynamic> get(String url) async {
+  Future<Map<String, dynamic>> get(String url) async {
     return await _response(http.get(_uri(url), headers: getHeaders()));
   }
 
-  Future<dynamic> post(String url, Map<String, dynamic>? data) async {
+  Future<Map<String, dynamic>> post(String url, Map<String, dynamic>? data) async {
     return await _response(
         http.post(_uri(url), body: data, headers: getHeaders()));
   }
 
-  Future<dynamic> delete(String url) async {
+  Future<Map<String, dynamic>> delete(String url) async {
     return await _response(http.delete(_uri(url), headers: getHeaders()));
   }
 
-  Future<dynamic> put(String url, Map<String, dynamic>? data) async {
+  Future<Map<String, dynamic>> put(String url, Map<String, dynamic>? data) async {
     return await _response(
         http.put(_uri(url), body: data, headers: getHeaders()));
   }
@@ -36,7 +36,7 @@ class ApiService {
     return Uri.parse("$_baseUrl/api/$url");
   }
 
-  Future<dynamic> _response(Future<http.Response> response) async {
+  Future<Map<String, dynamic>> _response(Future<http.Response> response) async {
     try {
       final res = await response;
       final json = jsonDecode(res.body);
@@ -45,7 +45,7 @@ class ApiService {
         throw ApiServiceExaption(
             status: res.statusCode, message: json["message"]);
       }
-      return json?["data"];
+      return json;
     } on SocketException {
       throw ApiServiceExaption(message: "No Internet connection");
     } catch (_) {

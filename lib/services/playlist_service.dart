@@ -1,47 +1,32 @@
 import 'package:soundstream_flutter/models/playlist.dart';
+import 'package:soundstream_flutter/services/api_service.dart';
 
 class PlaylistService {
+  final api = ApiService();
+
   Future<List<Playlist>> list() async {
-    return Future.delayed(
-      const Duration(seconds: 1),
-      () => [
-        Playlist.fromJson({
-          "id": 1,
-          "title": "Title 1",
-          "user": {
-            "id": 1,
-            "username": "usernane",
-          },
-          "album": false,
-          "created_at": "2023-18-05",
-          "description": "this is dfsd f",
-          "liked": true,
-          "private": false,
-          "tracks_count": 5,
-        }),
-      ],
-    );
+    final js = await api.get("playlists");
+    return (js["data"] as List<dynamic>).map((v) => Playlist.fromJson(v)).toList();
   }
 
-  Future<Playlist> get(int id) {
-    return Future.delayed(
-        const Duration(seconds: 2),
-        () => Playlist(
-              id: id,
-              title: "Title",
-            ));
+  Future<Playlist> get(int id) async {
+    final js = await api.get("playlists/$id");
+    return Playlist.fromJson(js["data"]);
   }
 
-  Future<Playlist> create(Playlist playlist) {
-    playlist.id = 12;
-    return Future.delayed(const Duration(seconds: 2), () => playlist);
+  Future<Playlist> create(Playlist playlist) async {
+    final js = await api.post("playlists", {
+      if (playlist.title.isNotEmpty) "title": playlist.title,
+    });
+
+    return Playlist.fromJson(js["data"]);
   }
 
   Future<Playlist> update(Playlist playlist) {
     return Future.delayed(const Duration(seconds: 2), () => playlist);
   }
 
-  Future<void> destroy(Playlist playlist) {
-    return Future.delayed(const Duration(seconds: 8));
+  Future<void> destroy(Playlist playlist) async {
+    await api.delete("playlists/${playlist.id}");
   }
 }
