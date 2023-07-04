@@ -26,17 +26,18 @@ class AudioQueueProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setList(List<Track> list) async {
+  void setList(List<Track> list, {int? index}) async {
     _queue.clear();
     _queue.addAll(list);
     _playlist.clear();
-    await _playlist.addAll(_queue.map((v) => AudioSource.uri(Uri.parse(v.url))).toList());
+    await _playlist.addAll(_queue.map((v) => AudioSource.uri(v.uri)).toList());
+    seekIndex(index ?? 0);
     notifyListeners();
   }
 
   void add(Track track) async {
     _queue.add(track);
-    await _playlist.add(AudioSource.uri(Uri.parse(track.url)));
+    await _playlist.add(AudioSource.uri(track.uri));
     notifyListeners();
   }
 
@@ -67,4 +68,15 @@ class AudioQueueProvider extends ChangeNotifier {
     await _audio.seekToNext();
     notifyListeners();
   }
+
+  void seekIndex(int index) async {
+    await _audio.seek(Duration.zero, index:  index);
+    notifyListeners();
+  }
+
+  void seekTrack(Track track) {
+    int index = _queue.indexOf(track);
+    seekIndex(index);
+  }
 }
+
