@@ -17,14 +17,18 @@ class AudioProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration?>(
-        stream: audio?.positionStream,
+        stream: audio?.durationStream,
         builder: (context, snapshot) {
-          return Column(
-            children: [
-              slider(snapshot),
-              if (!noLabels) labels(snapshot),
-            ],
-          );
+          return StreamBuilder<Duration?>(
+              stream: audio?.positionStream,
+              builder: (context, snapshot) {
+                return Column(
+                  children: [
+                    slider(snapshot),
+                    if (!noLabels) labels(snapshot),
+                  ],
+                );
+              });
         });
   }
 
