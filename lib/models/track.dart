@@ -1,5 +1,6 @@
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/user.dart';
+import 'package:soundstream_flutter/services/api_service.dart';
 
 class Track {
   int? id;
@@ -14,7 +15,7 @@ class Track {
   int duration;
   bool explicit;
 
-  String get url => "tracks/$id/stream";
+  Uri get uri => ApiService.uri("tracks/$id/stream");
 
   Track({
     this.id,
