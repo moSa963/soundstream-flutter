@@ -9,21 +9,21 @@ class ApiService {
   static const _baseUrl = "http://127.0.0.1:8000";
 
   Future<Map<String, dynamic>> get(String url) async {
-    return await _response(http.get(_uri(url), headers: getHeaders()));
+    return await _response(http.get(uri(url), headers: getHeaders()));
   }
 
   Future<Map<String, dynamic>> post(String url, Map<String, dynamic>? data) async {
     return await _response(
-        http.post(_uri(url), body: data, headers: getHeaders()));
+        http.post(uri(url), body: data, headers: getHeaders()));
   }
 
   Future<Map<String, dynamic>> delete(String url) async {
-    return await _response(http.delete(_uri(url), headers: getHeaders()));
+    return await _response(http.delete(uri(url), headers: getHeaders()));
   }
 
   Future<Map<String, dynamic>> put(String url, Map<String, dynamic>? data) async {
     return await _response(
-        http.put(_uri(url), body: data, headers: getHeaders()));
+        http.put(uri(url), body: data, headers: getHeaders()));
   }
 
   Map<String, String> getHeaders() {
@@ -33,7 +33,7 @@ class ApiService {
     };
   }
 
-  Uri _uri(String url) {
+  static Uri uri(String url) {
     return Uri.parse("$_baseUrl/api/$url");
   }
 
