@@ -17,6 +17,8 @@ class Track {
 
   Uri get uri => ApiService.uri("tracks/$id/stream");
 
+  Uri get imgUri => ApiService.uri("tracks/$id/photo");
+
   Track({
     this.id,
     this.title = "",

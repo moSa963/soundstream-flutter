@@ -13,7 +13,7 @@ class TrackItem extends StatelessWidget {
     return ListItem(
       onTap: onTap,
       leading: Image.network(
-          'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+          track.imgUri.toString(),
           fit: BoxFit.contain,
         ),
         title: track.title,
