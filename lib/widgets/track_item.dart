@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/widgets/like_button.dart';
 import 'package:soundstream_flutter/widgets/list_item.dart';
 
 class TrackItem extends StatelessWidget {
@@ -18,6 +19,9 @@ class TrackItem extends StatelessWidget {
         ),
         title: track.title,
         subtitle: track.album?.title ?? "",
+        actions:  [
+          LikeButton(liked: track.liked ),
+        ],
     );
   }
 }
