@@ -13,12 +13,12 @@ class PlaylistItem extends StatelessWidget {
     return ListItem(
       onTap: () => _openShowPlaylistPage(context),
       leading: Image.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+        playlist.imgUri.toString(),
         fit: BoxFit.contain,
       ),
       title: playlist.title,
       subtitle:
-          "${playlist.album ? "Album" : "Playlist"} . ${playlist.user?.username ?? ""}",
+          "${playlist.album ? "Album" : "Playlist"} . @${playlist.user?.username ?? ""}",
     );
   }
 

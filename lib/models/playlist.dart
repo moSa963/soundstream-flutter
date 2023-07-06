@@ -1,4 +1,5 @@
 import 'package:soundstream_flutter/models/user.dart';
+import 'package:soundstream_flutter/services/api_service.dart';
 
 class Playlist {
   int? id;
@@ -10,8 +11,8 @@ class Playlist {
   bool liked;
   int tracksCount;
   bool private;
-  String get imgSrc =>
-      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg';
+
+  Uri get imgUri => ApiService.uri("playlists/$id/photo");
 
   Playlist({
     this.id,
