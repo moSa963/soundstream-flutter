@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/pages/likes_page/likes_page.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/widgets/list_item.dart';
 import 'package:soundstream_flutter/widgets/playlist_item.dart';
@@ -35,6 +36,15 @@ class _LibraryPageState extends State<LibraryPage> {
           child: const Icon(Icons.favorite),
         ),
       ),
+      onTap: () => _openLikesPage(),
     );
+  }
+
+  void _openLikesPage() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return const LikesPage();
+      },
+    ));
   }
 }
