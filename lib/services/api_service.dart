@@ -40,13 +40,14 @@ class ApiService {
   Future<Map<String, dynamic>> _response(Future<http.Response> response) async {
     try {
       final res = await response;
-      final json = jsonDecode(res.body);
+      final Map<String, dynamic>? json = res.body.isNotEmpty ? jsonDecode(res.body) : null;
 
       if (!(res.statusCode >= 200 && res.statusCode <= 299)) {
         throw ApiServiceExaption(
-            status: res.statusCode, message: json["message"]);
+            status: res.statusCode, message: json?["message"]);
       }
-      return json;
+
+      return json ?? {};
     } on SocketException {
       throw ApiServiceExaption(message: "No Internet connection");
     } catch (_) {
