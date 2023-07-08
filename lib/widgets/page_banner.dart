@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
 
 class PageBanner extends StatelessWidget {
   final Widget? image;
@@ -40,7 +41,7 @@ class PageBanner extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Text(title,
+          OverflowAnimatedText(title,
               textScaleFactor: 2,
               style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 5),
