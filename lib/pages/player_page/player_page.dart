@@ -28,7 +28,7 @@ class PlayerPage extends StatelessWidget {
             PlayerControlBar(audio: provider.audio),
             const SizedBox(height: 25,),
 
-            for (var v in context.watch<AudioQueueProvider>().queue) TrackItem(track: v, onTap: () => playTrack(context, v) ,)
+            for (var v in context.watch<AudioQueueProvider>().queue) TrackItem(key: Key(v.id.toString()), track: v, onTap: () => playTrack(context, v) ,)
           ],
         ),
     );

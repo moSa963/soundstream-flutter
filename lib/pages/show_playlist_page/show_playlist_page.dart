@@ -37,7 +37,11 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
       body: ListView(
         children: [
           ShowPlaylistBanner(playlist: _playlist ?? widget.playlist),
-          for (var track in _tracks ?? []) TrackItem(track: track, onTap: () => handleTap(track)),
+          for (var track in _tracks ?? [])
+            TrackItem(
+                key: Key(track.id.toString()),
+                track: track,
+                onTap: () => handleTap(track)),
         ],
       ),
     );
@@ -58,11 +62,14 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
   }
 
   void handleTap(Track track) {
-    context.read<AudioQueueProvider>()
-    .setList(_tracks ?? [], index: _tracks?.indexOf(track));
+    context
+        .read<AudioQueueProvider>()
+        .setList(_tracks ?? [], index: _tracks?.indexOf(track));
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return const PlayerPage();
-    },));
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return const PlayerPage();
+      },
+    ));
   }
 }
