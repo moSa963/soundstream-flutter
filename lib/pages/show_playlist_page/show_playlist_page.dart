@@ -39,9 +39,11 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
           ShowPlaylistBanner(playlist: _playlist ?? widget.playlist),
           for (var track in _tracks ?? [])
             TrackItem(
-                key: Key(track.id.toString()),
-                track: track,
-                onTap: () => handleTap(track)),
+              key: Key(track.id.toString()),
+              track: track,
+              onTap: () => handleTap(track),
+              updateTrack: updateTrack,
+            ),
         ],
       ),
     );
@@ -71,5 +73,11 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
         return const PlayerPage();
       },
     ));
+  }
+
+  void updateTrack(Track track) {
+    setState(() {
+      _tracks?[_tracks?.indexWhere((element) => element.id == track.id)  ?? -1] = track;
+    });
   }
 }
