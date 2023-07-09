@@ -9,7 +9,7 @@ class LikesService {
 
   Future<List<Track>> likedTracks() async {
     final js = await api.get("likes");
-    return js["data"].map((v) => Track.fromJson(v)).toList();
+    return (js["data"] as List<dynamic>).map((v) => Track.fromJson(v)).toList();
   }
 
   Future<void> likeTrack(Track track) async {
