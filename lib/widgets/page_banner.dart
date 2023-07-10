@@ -4,12 +4,14 @@ import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
 class PageBanner extends StatelessWidget {
   final Widget? image;
   final List<Widget>? actions;
+  final List<Widget>? leading;
   final String title;
   final String subtitle;
 
   const PageBanner({
     super.key,
     this.actions,
+    this.leading,
     this.image,
     this.subtitle = "",
     this.title = "",
@@ -31,7 +33,9 @@ class PageBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: kToolbarHeight),
+          const SizedBox(height: kToolbarHeight / 2),
+          if (leading != null) Row(children: leading ?? []),
+          const SizedBox(height: kToolbarHeight / 2),
           Center(
             child: Container(
               decoration:
