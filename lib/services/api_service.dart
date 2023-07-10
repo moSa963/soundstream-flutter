@@ -13,6 +13,7 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>> post(String url, Map<String, dynamic>? data) async {
+        
     return await _response(
         http.post(uri(url), body: data, headers: getHeaders()));
   }
@@ -39,7 +40,9 @@ class ApiService {
 
   Future<Map<String, dynamic>> _response(Future<http.Response> response) async {
     try {
+
       final res = await response;
+
       final Map<String, dynamic>? json = res.body.isNotEmpty ? jsonDecode(res.body) : null;
 
       if (!(res.statusCode >= 200 && res.statusCode <= 299)) {
@@ -50,8 +53,8 @@ class ApiService {
       return json ?? {};
     } on SocketException {
       throw ApiServiceExaption(message: "No Internet connection");
-    } catch (_) {
-      throw ApiServiceExaption(message: "There is something wrong");
+    } catch (e) {
+      throw ApiServiceExaption(message: e.toString());
     }
   }
 }
