@@ -9,7 +9,7 @@ import 'package:soundstream_flutter/services/playlist_service.dart';
 void main() => runApp(ChangeNotifierProvider<ThemeProvider>(
       create: (_) => ThemeProvider(),
       child: ChangeNotifierProvider<PlaylistsProvider>(
-        create: (_) => PlaylistsProvider(service: PlaylistService()),
+        create: (_) => PlaylistsProvider(service: const PlaylistService()),
         child: ChangeNotifierProvider<AudioQueueProvider>(
           create: (_) => AudioQueueProvider(),
           child: const MyApp(),
