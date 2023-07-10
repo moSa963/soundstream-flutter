@@ -12,25 +12,28 @@ class ApiService {
     return await _response(http.get(uri(url), headers: getHeaders()));
   }
 
-  Future<Map<String, dynamic>> post(String url, Map<String, dynamic>? data) async {
-        
+  Future<Map<String, dynamic>> post(
+      String url, Map<String, dynamic>? data) async {
     return await _response(
-        http.post(uri(url), body: data, headers: getHeaders()));
+        http.post(uri(url), body: jsonEncode(data), headers: getHeaders()));
   }
 
   Future<Map<String, dynamic>> delete(String url) async {
     return await _response(http.delete(uri(url), headers: getHeaders()));
   }
 
-  Future<Map<String, dynamic>> put(String url, Map<String, dynamic>? data) async {
+  Future<Map<String, dynamic>> put(
+      String url, Map<String, dynamic>? data) async {
     return await _response(
-        http.put(uri(url), body: data, headers: getHeaders()));
+        http.put(uri(url), body: jsonEncode(data), headers: getHeaders()));
   }
 
   Map<String, String> getHeaders() {
     return {
+      "Content-Type": "application/json",
       "Accept": "application/json",
-      "Authorization": "Bearer 1|LE3ZmYE2qQZsg2XGTQw5yRco5HPky6vY4D0Ck4MR", //temporary 
+      "Authorization":
+          "Bearer 1|LE3ZmYE2qQZsg2XGTQw5yRco5HPky6vY4D0Ck4MR", //temporary
     };
   }
 
@@ -40,17 +43,16 @@ class ApiService {
 
   Future<Map<String, dynamic>> _response(Future<http.Response> response) async {
     try {
-
       final res = await response;
-
-      final Map<String, dynamic>? json = res.body.isNotEmpty ? jsonDecode(res.body) : null;
+      final Map<String, dynamic>? js =
+          res.body.isNotEmpty ? jsonDecode(res.body) : null;
 
       if (!(res.statusCode >= 200 && res.statusCode <= 299)) {
         throw ApiServiceExaption(
-            status: res.statusCode, message: json?["message"]);
+            status: res.statusCode, message: js?["message"]);
       }
 
-      return json ?? {};
+      return js ?? {};
     } on SocketException {
       throw ApiServiceExaption(message: "No Internet connection");
     } catch (e) {
