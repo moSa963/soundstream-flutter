@@ -16,11 +16,11 @@ class Validator {
     }
 
     if (max != null && value.length > max) {
-      return "The maximum length is 255";
+      return "The maximum length is $max";
     }
 
     if (min != null && value.length < min) {
-      return "The minimum length is 255";
+      return "The minimum length is $min";
     }
 
     if (regex != null && !RegExp(regex).hasMatch(value)) {
