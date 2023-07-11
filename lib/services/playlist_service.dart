@@ -17,14 +17,21 @@ class PlaylistService {
 
   Future<Playlist> create(Playlist playlist) async {
     final js = await api.post("playlists", {
-      if (playlist.title.isNotEmpty) "title": playlist.title,
+      if (playlist.title != null) "title": playlist.title,
     });
 
     return Playlist.fromJson(js["data"]);
   }
 
-  Future<Playlist> update(Playlist playlist) {
-    return Future.delayed(const Duration(seconds: 2), () => playlist);
+  Future<Playlist> update(Playlist playlist) async {
+
+    final js = await api.post("playlists/${playlist.id}", {
+      if (playlist.title != null) "title": playlist.title,
+      if (playlist.description != null) "description": playlist.description,
+      if (playlist.private != null) "private": playlist.private,
+    });
+
+    return Playlist.fromJson(js["data"]);
   }
 
   Future<void> destroy(Playlist playlist) async {
