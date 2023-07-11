@@ -2,29 +2,38 @@ import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
 
 class Playlist {
-  int? id;
+  int id;
   User? user;
-  String title;
-  String description;
-  bool album;
+  String? title;
+  String? description;
+  bool? album;
   DateTime? createdAt;
-  bool liked;
-  int tracksCount;
-  bool private;
+  bool? liked;
+  int? tracksCount;
+  bool? private;
 
   Uri get imgUri => ApiService.uri("playlists/$id/photo");
 
   Playlist({
-    this.id,
-    this.title = "",
-    this.description = "",
-    this.album = false,
-    this.liked = false,
-    this.private = true,
-    this.tracksCount = 0,
+    this.id = -1,
+    this.title,
+    this.description,
+    this.album,
+    this.liked,
+    this.private,
+    this.tracksCount,
     this.user,
     this.createdAt,
   });
+
+  factory Playlist.forUpdate({ required int id, String? title, String? description, bool? private }) {
+    return Playlist(
+      id: id,
+      title: title,
+      description: description,
+      private: private,
+    );
+  }
 
   factory Playlist.fromJson(Map<String, dynamic> json) {
     return Playlist(
