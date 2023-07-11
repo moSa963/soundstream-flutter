@@ -16,9 +16,9 @@ class PlaylistItem extends StatelessWidget {
         playlist.imgUri.toString(),
         fit: BoxFit.contain,
       ),
-      title: playlist.title,
+      title: playlist.title ?? "",
       subtitle:
-          "${playlist.album ? "Album" : "Playlist"} . @${playlist.user?.username ?? ""}",
+          "${playlist.album ?? false ? "Album" : "Playlist"} . @${playlist.user?.username ?? ""}",
     );
   }
 
