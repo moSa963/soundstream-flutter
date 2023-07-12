@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/providers/provider.dart';
 
 
-class AudioQueueProvider extends ChangeNotifier {
+class AudioQueueProvider extends Provider {
   final List<Track> _queue;
   List<Track> get queue => _queue;
 

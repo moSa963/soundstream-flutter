@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:soundstream_flutter/providers/provider.dart';
 
-class ThemeProvider with ChangeNotifier {
+class ThemeProvider extends Provider {
   ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
 
