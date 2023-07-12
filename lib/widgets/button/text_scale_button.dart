@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soundstream_flutter/widgets/scale_gesture_detector.dart';
+import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
 
 class TextScaleButton extends StatelessWidget {
   const TextScaleButton(this.text, {super.key, this.onTap});

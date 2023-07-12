@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
-import 'package:soundstream_flutter/widgets/like_button.dart';
-import 'package:soundstream_flutter/widgets/list_item.dart';
+import 'package:soundstream_flutter/widgets/button/like_button.dart';
+import 'package:soundstream_flutter/widgets/list_item/list_item.dart';
 
 class TrackItem extends StatelessWidget {
   final _service = const LikesService();

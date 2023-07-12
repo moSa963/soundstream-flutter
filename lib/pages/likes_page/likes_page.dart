@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
 import 'package:soundstream_flutter/widgets/page_banner.dart';
-import 'package:soundstream_flutter/widgets/track_item.dart';
+import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class LikesPage extends StatefulWidget {
   const LikesPage({super.key});

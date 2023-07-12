@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/pages/show_playlist_page/show_playlist_page.dart';
-import 'package:soundstream_flutter/widgets/list_item.dart';
+import 'package:soundstream_flutter/widgets/list_item/list_item.dart';
 
 class PlaylistItem extends StatelessWidget {
   final Playlist playlist;

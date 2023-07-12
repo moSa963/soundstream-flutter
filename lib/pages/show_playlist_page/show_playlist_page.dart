@@ -7,7 +7,7 @@ import 'package:soundstream_flutter/pages/show_playlist_page/show_playlist_banne
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/services/playlist_service.dart';
 import 'package:soundstream_flutter/services/track_service.dart';
-import 'package:soundstream_flutter/widgets/track_item.dart';
+import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class ShowPlaylistPage extends StatefulWidget {
   const ShowPlaylistPage({super.key, required this.playlist});
@@ -50,7 +50,7 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
   }
 
   void loadData() async {
-    Playlist p = await widget._service.get(widget.playlist.id ?? 0);
+    Playlist p = await widget._service.get(widget.playlist.id);
 
     setState(() {
       _playlist = p;
@@ -77,7 +77,8 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
 
   void updateTrack(Track track) {
     setState(() {
-      _tracks?[_tracks?.indexWhere((element) => element.id == track.id)  ?? -1] = track;
+      _tracks?[_tracks?.indexWhere((element) => element.id == track.id) ?? -1] =
+          track;
     });
   }
 }

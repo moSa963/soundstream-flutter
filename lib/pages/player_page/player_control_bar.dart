@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
-import 'package:soundstream_flutter/widgets/audio_play_button.dart';
-import 'package:soundstream_flutter/widgets/scale_gesture_detector.dart';
+import 'package:soundstream_flutter/widgets/button/audio_play_button.dart';
+import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
 
 class PlayerControlBar extends StatelessWidget {
   const PlayerControlBar({super.key, this.audio});

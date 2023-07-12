@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/utils/validator.dart';
-import 'package:soundstream_flutter/widgets/bottom_sheet.dart';
+import 'package:soundstream_flutter/widgets/bottom_sheet/bottom_sheet.dart';
 
 class UpdatePlaylistSheet extends StatefulWidget {
   const UpdatePlaylistSheet({super.key, required this.playlist});

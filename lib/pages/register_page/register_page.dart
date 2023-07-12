@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/pages/register_page/login_form.dart';
 import 'package:soundstream_flutter/pages/register_page/signup_form.dart';
 import 'package:soundstream_flutter/widgets/logo_banner.dart';
-import 'package:soundstream_flutter/widgets/text_scale_button.dart';
+import 'package:soundstream_flutter/widgets/button/text_scale_button.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({super.key});

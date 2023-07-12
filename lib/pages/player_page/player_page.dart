@@ -5,7 +5,7 @@ import 'package:soundstream_flutter/pages/player_page/player_control_bar.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/audio_progress_bar.dart';
 import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
-import 'package:soundstream_flutter/widgets/track_item.dart';
+import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class PlayerPage extends StatelessWidget {
   const PlayerPage({super.key});
