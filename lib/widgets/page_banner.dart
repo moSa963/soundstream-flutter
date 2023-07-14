@@ -24,8 +24,7 @@ class PageBanner extends StatelessWidget {
       decoration: BoxDecoration(
         gradient:
             RadialGradient(radius: 0.9, focal: Alignment.topCenter, colors: [
-          Theme.of(context).primaryTextTheme.bodyLarge?.color?.withAlpha(120) ??
-              Colors.white,
+          Theme.of(context).colorScheme.primary.withAlpha(120),
           Colors.transparent,
         ]),
       ),
@@ -49,7 +48,7 @@ class PageBanner extends StatelessWidget {
               textScaleFactor: 2,
               style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 5),
-          if (subtitle.isNotEmpty) Text(subtitle),
+          if (subtitle.isNotEmpty) Text(subtitle, maxLines: 3, overflow: TextOverflow.ellipsis,),
           const SizedBox(height: 15),
           Row(children: actions ?? []),
         ],
