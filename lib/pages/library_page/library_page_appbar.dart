@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/pages/create_playlist_page.dart';
+import 'package:soundstream_flutter/widgets/user_avatar.dart';
 
 
 
@@ -12,6 +13,7 @@ class LibraryPageAppbar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 2,
       shadowColor: Theme.of(context).colorScheme.shadow,
       title: const Text("Your Library"),
+      leading: const UserAvatar(),
       actions: [
         IconButton(
           onPressed: () => openPage(context, const CreatePlaylistPage()), 
