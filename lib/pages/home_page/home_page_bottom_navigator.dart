@@ -9,26 +9,38 @@ class HomePageBottomNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Theme.of(context).colorScheme.background, Colors.transparent ],
+          begin: AlignmentDirectional.bottomCenter,
+          end: Alignment.topCenter,
+          
+        ),
+      ),
     
-    return BottomNavigationBar(
-      currentIndex: index,
-      onTap: onChange,
-      selectedItemColor: Theme.of(context).colorScheme.secondary,
-      unselectedItemColor: Theme.of(context).colorScheme.secondary,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "Home",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: "Search",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.library_books),
-          label: "Library",
-        ),
-      ],
+      child: BottomNavigationBar(
+        currentIndex: index,
+        onTap: onChange,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        unselectedItemColor: Theme.of(context).colorScheme.secondary,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: "Search",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: "Library",
+          ),
+        ],
+      ),
     );
   }
 }

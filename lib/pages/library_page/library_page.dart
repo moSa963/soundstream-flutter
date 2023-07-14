@@ -18,6 +18,7 @@ class _LibraryPageState extends State<LibraryPage> {
     var playlists = context.watch<PlaylistsProvider>().playlists;
 
     return ListView(
+      clipBehavior: Clip.none,
       children: [
         likedTracksItem(),
         for (var playlist in playlists) PlaylistItem(playlist: playlist)
