@@ -4,8 +4,8 @@ class HomePageBottomNavigator extends StatelessWidget {
   final int index;
   final void Function(int index) onChange;
 
-  const HomePageBottomNavigator({super.key, required this.index, required this.onChange});
-
+  const HomePageBottomNavigator(
+      {super.key, required this.index, required this.onChange});
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +27,6 @@ class HomePageBottomNavigator extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.library_books),
           label: "Library",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_box),
-          label: "Account",
         ),
       ],
     );

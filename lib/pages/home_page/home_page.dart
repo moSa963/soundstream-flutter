@@ -18,10 +18,6 @@ class HomePage extends StatefulWidget {
       "appbar": const LibraryPageAppbar(),
       "screen": const LibraryPage(),
     },
-    {
-      "appbar": null,
-      "screen": const Text("account"),
-    },
   ];
 
   @override
