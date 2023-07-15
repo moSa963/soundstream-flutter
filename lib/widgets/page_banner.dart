@@ -48,7 +48,11 @@ class PageBanner extends StatelessWidget {
               textScaleFactor: 2,
               style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 5),
-          if (subtitle.isNotEmpty) Text(subtitle, maxLines: 3, overflow: TextOverflow.ellipsis,),
+          if (subtitle.isNotEmpty)
+            Text(subtitle,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(color: Colors.grey)),
           const SizedBox(height: 15),
           Row(children: actions ?? []),
         ],
