@@ -12,10 +12,7 @@ class PlaylistItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListItem(
       onTap: () => _openShowPlaylistPage(context),
-      leading: Image.network(
-        playlist.imgUri.toString(),
-        fit: BoxFit.contain,
-      ),
+      leading: Image.network(playlist.imgUri.toString()),
       title: playlist.title ?? "",
       subtitle:
           "${playlist.album ?? false ? "Album" : "Playlist"} . @${playlist.user?.username ?? ""}",
