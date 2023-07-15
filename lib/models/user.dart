@@ -1,6 +1,10 @@
+import 'package:soundstream_flutter/services/api_service.dart';
+
 class User {
   int? id;
   String username;
+
+  Uri get imgUri => ApiService.uri("account/$username/profile/photo");
 
   User({
     this.id,
