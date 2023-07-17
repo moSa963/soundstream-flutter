@@ -14,9 +14,12 @@ class ShowPlaylistBanner extends StatelessWidget {
     return PageBanner(
       title: playlist.title ?? "",
       subtitle: playlist.description ?? "",
-      image: Image.network(
-        playlist.imgUri.toString(),
-        fit: BoxFit.contain,
+      image: Hero(
+        tag: "${playlist.id}",
+        child: Image.network(
+          playlist.imgUri.toString(),
+          fit: BoxFit.cover,
+        ),
       ),
       leading: [
         Text(
