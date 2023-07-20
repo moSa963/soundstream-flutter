@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundstream_flutter/pages/home_page/home_page.dart';
+import 'package:soundstream_flutter/pages/home_page/home_nav_page.dart';
 import 'package:soundstream_flutter/pages/loading_page.dart';
 import 'package:soundstream_flutter/pages/register_page/register_page.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
@@ -28,7 +28,7 @@ class RootPage extends StatelessWidget {
 
           return child;
         },
-        child: HomePage(),
+        child: HomeNavPage(),
       ),
     );
   }
