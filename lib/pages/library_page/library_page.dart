@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/pages/library_page/library_page_appbar.dart';
 import 'package:soundstream_flutter/pages/likes_page/likes_page.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/widgets/list_item/list_item.dart';
@@ -17,13 +18,15 @@ class _LibraryPageState extends State<LibraryPage> {
   Widget build(BuildContext context) {
     var playlists = context.watch<PlaylistsProvider>().playlists;
 
-    return ListView(
-      clipBehavior: Clip.none,
-      children: [
-        likedTracksItem(),
-        for (var playlist in playlists) PlaylistItem(playlist: playlist)
-      ],
-    );
+    return Scaffold(
+        appBar: const LibraryPageAppbar(),
+        body: ListView(
+          clipBehavior: Clip.none,
+          children: [
+            likedTracksItem(),
+            for (var playlist in playlists) PlaylistItem(playlist: playlist)
+          ],
+        ));
   }
 
   Widget likedTracksItem() {
