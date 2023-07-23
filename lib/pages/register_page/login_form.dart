@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/providers/auth_provider.dart';
 import 'package:soundstream_flutter/utils/validator.dart';
 
 class LoginForm extends StatefulWidget {
@@ -63,12 +65,15 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _onChanged(String key, String value) {
-    inputs.update(key, (value) => value, ifAbsent: () => value);
+    inputs.update(key, (_) => value, ifAbsent: () => value);
   }
 
   void _handelSubmit() {
     if (!(_key.currentState?.validate() ?? false)) return;
 
-    //TODO
+    context.read<AuthProvider>().login(
+          username: inputs["username"] ?? "",
+          password: inputs["password"] ?? "",
+        );
   }
 }
