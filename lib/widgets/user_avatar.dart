@@ -13,9 +13,26 @@ class UserAvatar extends StatelessWidget {
         child: Container(
       constraints: BoxConstraints(maxWidth: maxWidth ?? double.infinity),
       padding: const EdgeInsets.all(5),
-      child: CircleAvatar(
-        backgroundImage: user?.imgUri != null ? NetworkImage(user?.imgUri.toString() ?? "") : null, 
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: AspectRatio(aspectRatio: 1, child: getImage()),
       ),
     ));
+  }
+
+  Widget getImage() {
+    if (user?.imgUri != null) {
+      return Image.network(
+        user?.imgUri.toString() ?? "",
+        fit: BoxFit.cover,
+      );
+    }
+
+    return Container(
+      color: Colors.blue,
+    );
   }
 }
