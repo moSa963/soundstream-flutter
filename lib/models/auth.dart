@@ -4,18 +4,16 @@
 import 'package:soundstream_flutter/models/user.dart';
 
 class Auth extends User{
-  String name;
   String email;
   DateTime? emailVerifiedAt;
-  DateTime? createdAt;
 
   Auth({
     required super.id,
-    this.name = "",
+    super.name = "",
     super.username = "",
     this.email = "",
     this.emailVerifiedAt,
-    this.createdAt,
+    super.createdAt,
   });
 
   factory Auth.fromJson(Map<String, dynamic> json) {
