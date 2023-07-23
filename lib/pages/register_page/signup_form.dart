@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/providers/auth_provider.dart';
 import 'package:soundstream_flutter/utils/validator.dart';
 
 class SignupForm extends StatefulWidget {
@@ -62,7 +64,8 @@ class _SignupFormState extends State<SignupForm> {
               const SizedBox(height: 20),
               //confirm password field
               TextFormField(
-                onChanged: (value) => _onChanged("confirm_password", value),
+                onChanged: (value) =>
+                    _onChanged("password_confirmation", value),
                 obscureText: true,
                 decoration: _inputDecoration("confirm password"),
                 validator: (v) =>
@@ -88,7 +91,8 @@ class _SignupFormState extends State<SignupForm> {
     return SizedBox(
       width: double.infinity,
       height: 40,
-      child: FilledButton(onPressed: _handelSubmit, child: const Text("Sign up")),
+      child:
+          FilledButton(onPressed: _handelSubmit, child: const Text("Sign up")),
     );
   }
 
@@ -99,6 +103,11 @@ class _SignupFormState extends State<SignupForm> {
   void _handelSubmit() {
     if (!(_key.currentState?.validate() ?? false)) return;
 
-    //TODO
+    context.read<AuthProvider>().register(
+        name: inputs["name"] ?? "",
+        email: inputs["email"] ?? "",
+        username: inputs["username"] ?? "",
+        password: inputs["password"] ?? "",
+        passwordConfirmation: inputs["password_confirmation"] ?? "");
   }
 }
