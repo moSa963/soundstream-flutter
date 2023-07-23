@@ -35,9 +35,9 @@ class ApiService {
     String? token = await _storage.read(key: "token");
 
     return {
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      if(token != null) "Authorization": "Bearer $token",
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.acceptHeader: "application/json",
+      if(token != null) HttpHeaders.authorizationHeader: "Bearer $token",
     };
   }
 
