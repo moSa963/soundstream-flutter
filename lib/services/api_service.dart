@@ -1,39 +1,43 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:soundstream_flutter/models/api_service_exaption.dart';
 
 class ApiService {
   const ApiService();
   static const _baseUrl = "http://127.0.0.1:8000";
+  static FlutterSecureStorage? _flutterStorage;
+  FlutterSecureStorage get _storage => (_flutterStorage ??= const FlutterSecureStorage());
 
   Future<Map<String, dynamic>> get(String url) async {
-    return await _response(http.get(uri(url), headers: getHeaders()));
+    return await _response(http.get(uri(url), headers: await _getHeaders()));
   }
 
   Future<Map<String, dynamic>> post(
       String url, Map<String, dynamic>? data) async {
     return await _response(
-        http.post(uri(url), body: jsonEncode(data), headers: getHeaders()));
+        http.post(uri(url), body: jsonEncode(data), headers: await _getHeaders()));
   }
 
   Future<Map<String, dynamic>> delete(String url) async {
-    return await _response(http.delete(uri(url), headers: getHeaders()));
+    return await _response(http.delete(uri(url), headers: await _getHeaders()));
   }
 
   Future<Map<String, dynamic>> put(
       String url, Map<String, dynamic>? data) async {
     return await _response(
-        http.put(uri(url), body: jsonEncode(data), headers: getHeaders()));
+        http.put(uri(url), body: jsonEncode(data), headers: await _getHeaders()));
   }
 
-  Map<String, String> getHeaders() {
+  Future<Map<String, String>> _getHeaders() async {
+    String? token = await _storage.read(key: "token");
+
     return {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Authorization":
-          "Bearer 1|LE3ZmYE2qQZsg2XGTQw5yRco5HPky6vY4D0Ck4MR", //temporary
+      if(token != null) "Authorization": "Bearer $token",
     };
   }
 
@@ -59,4 +63,8 @@ class ApiService {
       throw ApiServiceExaption(message: e.toString());
     }
   }
+
+  Future<void> setToken(String? token) async {
+    await _storage.write(key: "token", value: token);
+  } 
 }
