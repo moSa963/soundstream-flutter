@@ -26,8 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(vertical: 50),
-              alignment: Alignment.center,
-              child: const LogoBanner(title: "SoundStream", maxHeight: 100),
+              child: LogoBanner(title: "SoundStream", maxHeight: 100, direction: _index == 0 ? Axis.vertical : Axis.horizontal),
             ),
             Expanded(
               child: Center(
