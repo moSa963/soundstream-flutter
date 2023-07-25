@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/models/api_service_exaption.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
 import 'package:soundstream_flutter/utils/validator.dart';
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({super.key});
+  const SignupForm({super.key, required this.onError});
+  final void Function(String error) onError;
 
   @override
   State<SignupForm> createState() => _SignupFormState();
@@ -100,14 +102,18 @@ class _SignupFormState extends State<SignupForm> {
     inputs.update(key, (_) => value, ifAbsent: () => value);
   }
 
-  void _handelSubmit() {
+  void _handelSubmit() async {
     if (!(_key.currentState?.validate() ?? false)) return;
 
-    context.read<AuthProvider>().register(
-        name: inputs["name"] ?? "",
-        email: inputs["email"] ?? "",
-        username: inputs["username"] ?? "",
-        password: inputs["password"] ?? "",
-        passwordConfirmation: inputs["password_confirmation"] ?? "");
+    try {
+      await context.read<AuthProvider>().register(
+          name: inputs["name"] ?? "",
+          email: inputs["email"] ?? "",
+          username: inputs["username"] ?? "",
+          password: inputs["password"] ?? "",
+          passwordConfirmation: inputs["password_confirmation"] ?? "");
+    } on ApiServiceExaption catch (e) {
+      widget.onError.call(e.message);
+    }
   }
 }
