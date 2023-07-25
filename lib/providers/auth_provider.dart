@@ -22,7 +22,7 @@ class AuthProvider extends Provider {
       required String username,
       required String password,
       required String passwordConfirmation}) async {
-    withLoading(() async {
+    await withLoading(() async {
       auth = await service.register(
           name: name,
           email: email,
@@ -34,13 +34,13 @@ class AuthProvider extends Provider {
 
   Future<void> login(
       {required String username, required String password}) async {
-    withLoading(() async {
+    await withLoading(() async {
       auth = await service.login(username: username, password: password);
     });
   }
 
   Future<void> logout() async {
-    withLoading(() async {
+    await withLoading(() async {
       await service.logout();
       auth = null;
     });
