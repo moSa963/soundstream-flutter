@@ -20,12 +20,15 @@ class _LibraryPageState extends State<LibraryPage> {
 
     return Scaffold(
         appBar: const LibraryPageAppbar(),
-        body: ListView(
+        body: RefreshIndicator(
+          onRefresh: () async => print("todo refresh"),
+          child: ListView(
           clipBehavior: Clip.none,
           children: [
             likedTracksItem(),
             for (var playlist in playlists) PlaylistItem(playlist: playlist)
           ],
+        ),
         ));
   }
 
