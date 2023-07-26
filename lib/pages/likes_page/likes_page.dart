@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
 import 'package:soundstream_flutter/widgets/page_banner.dart';
-import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
+import 'package:soundstream_flutter/widgets/tracks_list.dart';
 
 class LikesPage extends StatefulWidget {
   const LikesPage({super.key});
@@ -37,8 +37,7 @@ class _LikesPageState extends State<LikesPage> {
               ),
             ),
           ),
-          for (var track in _tracks ?? [])
-            TrackItem(track: track, onTap: () => handleTap(track)),
+          TracksList(tracks: _tracks ?? []),
         ],
       ),
     );
@@ -50,9 +49,5 @@ class _LikesPageState extends State<LikesPage> {
     setState(() {
       _tracks = tracks;
     });
-  }
-
-  void handleTap(Track track) {
-    
   }
 }
