@@ -7,6 +7,7 @@ import 'package:soundstream_flutter/widgets/list_item/playlist_item.dart';
 import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 import 'package:soundstream_flutter/widgets/list_item/user_item.dart';
 import 'package:soundstream_flutter/widgets/timed_text_field.dart';
+import 'package:soundstream_flutter/widgets/tracks_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -39,7 +40,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: ListView(
         children: [
-          for (final track in _tracks) TrackItem(track: track),
+          TracksList(tracks: _tracks),
           for (final playlist in _playlists) PlaylistItem(playlist: playlist),
           for (final user in _users) UserItem(user: user),
         ],
