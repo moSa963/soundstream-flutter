@@ -4,7 +4,6 @@ import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/services/search_service.dart';
 import 'package:soundstream_flutter/widgets/list_item/playlist_item.dart';
-import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 import 'package:soundstream_flutter/widgets/list_item/user_item.dart';
 import 'package:soundstream_flutter/widgets/timed_text_field.dart';
 import 'package:soundstream_flutter/widgets/tracks_list.dart';
@@ -21,28 +20,35 @@ class _SearchPageState extends State<SearchPage> {
   List<Track> _tracks = [];
   List<Playlist> _playlists = [];
   List<User> _users = [];
+  String _filter = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TimedTextField(
-          hintText: "Search",
-          onChange: (value) => _loadData(value),
-        ),
-        bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(40),
-            child: Row(
+          title: TimedTextField(
+            hintText: "Search",
+            onChange: (value) => _loadData(value),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(20),
+            child: Wrap(
+              spacing: 4,
               children: [
-                Text("data"),
+                _chip("tracks"),
+                _chip("playlists"),
+                _chip("users"),
               ],
-            )),
-      ),
+            ),
+          )),
       body: ListView(
         children: [
-          TracksList(tracks: _tracks),
-          for (final playlist in _playlists) PlaylistItem(playlist: playlist),
-          for (final user in _users) UserItem(user: user),
+          if (_filter.isEmpty || _filter == "tracks")
+            TracksList(tracks: _tracks),
+          if (_filter.isEmpty || _filter == "playlists")
+            for (final playlist in _playlists) PlaylistItem(playlist: playlist),
+          if (_filter.isEmpty || _filter == "users")
+            for (final user in _users) UserItem(user: user),
         ],
       ),
     );
@@ -67,6 +73,22 @@ class _SearchPageState extends State<SearchPage> {
       _playlists = [];
       _playlists = [];
       _users = [];
+    });
+  }
+
+  Widget _chip(String name) {
+    return ActionChip(
+        label: Text(name),
+        shape: const StadiumBorder(),
+        backgroundColor: _filter == name
+            ? Theme.of(context).colorScheme.primary.withAlpha(100)
+            : null,
+        onPressed: () => _handleChipPressed(name));
+  }
+
+  void _handleChipPressed(String filter) {
+    setState(() {
+      _filter = filter == _filter ? "" : filter;
     });
   }
 }
