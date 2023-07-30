@@ -21,27 +21,47 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaleGestureDetector(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: ListTile(
-        leading: leading,
-        title: Text(
-          title,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: _subtitle(),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-        trailing: Wrap(
-          children: actions ?? [],
-        ),
-        horizontalTitleGap: 10,
-      ),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: ScaleGestureDetector(
+          onTap: onTap,
+          onLongPress: onLongPress,
+          child: Container(
+            color: Colors.transparent,
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 50,
+                  child: leading,
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      _subtitle(),
+                    ],
+                  ),
+                ),
+                Wrap(
+                  children: actions ?? [],
+                )
+              ],
+            ),
+          )),
     );
   }
 
   Widget _subtitle() {
     return Text(subtitle,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
           color: Colors.grey[500],
         ));
