@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/user.dart';
+import 'package:soundstream_flutter/pages/user_page/show_user_page.dart';
 import 'package:soundstream_flutter/widgets/list_item/list_item.dart';
 
 class UserItem extends StatelessWidget {
@@ -18,6 +19,6 @@ class UserItem extends StatelessWidget {
   }
 
   void _openShowUserPage(BuildContext context) {
-    //TODO
+    Navigator.push(context, MaterialPageRoute(builder: (context) => ShowUserPage(username: user.username),));
   }
 }
