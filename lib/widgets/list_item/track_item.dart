@@ -10,24 +10,31 @@ class TrackItem extends StatelessWidget {
   final void Function(Track track)? updateTrack;
   final void Function()? onTap;
 
-  const TrackItem({super.key, required this.track, this.onTap, this.updateTrack});
+  const TrackItem(
+      {super.key, required this.track, this.onTap, this.updateTrack});
 
   @override
   Widget build(BuildContext context) {
     return ListItem(
       onTap: onTap,
-      leading: Image.network(
-          track.imgUri.toString(),
-          fit: BoxFit.contain,
+      leading: AspectRatio(
+          aspectRatio: 1,
+          child: Hero(
+              tag: "track ${track.id}",
+              child: Image.network(
+                track.imgUri.toString(),
+                fit: BoxFit.cover,
+              ))),
+      title: track.title,
+      subtitle: track.album?.title ?? "",
+      actions: [
+        LikeButton(
+          liked: track.liked,
+          onChange: _like,
         ),
-        title: track.title,
-        subtitle: track.album?.title ?? "",
-        actions:  [
-          LikeButton(liked: track.liked, onChange: _like,),
-        ],
+      ],
     );
   }
-
 
   void _like(bool newValue) async {
     if (newValue) {
