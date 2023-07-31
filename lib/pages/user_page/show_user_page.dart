@@ -1,7 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/services/user_service.dart';
+import 'package:soundstream_flutter/widgets/button/navigator_back_button.dart';
+import 'package:soundstream_flutter/widgets/fade_shader_mask.dart';
 
 class ShowUserPage extends StatefulWidget {
   const ShowUserPage({super.key, required this.username});
@@ -24,10 +25,41 @@ class _ShowUserPageState extends State<ShowUserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: ListView(
         children: [
-          Text(_user?.username ?? "no data"),
+          SizedBox(
+            height: 300,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: FadeShaderMask(
+                    child: _user != null
+                        ? Hero(
+                            tag: widget.username,
+                            child: Image.network(_user?.imgUri.toString() ?? "",
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter))
+                        : null,
+                  ),
+                ),
+                Positioned.fill(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const NavigatorBackButton(),
+                      const Spacer(),
+                      Text(_user?.username ?? "",
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                          textScaleFactor: 2,
+                          overflow: TextOverflow.ellipsis),
+                      const Spacer(),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
