@@ -30,7 +30,6 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: ListView(
         children: [
           ShowPlaylistBanner(playlist: _playlist ?? widget.playlist),
