@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundstream_flutter/widgets/button/navigator_back_button.dart';
 import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
 
 class PageBanner extends StatelessWidget {
@@ -32,7 +33,7 @@ class PageBanner extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: kToolbarHeight / 2),
+          const NavigatorBackButton(),
           if (leading != null) Row(children: leading ?? []),
           const SizedBox(height: kToolbarHeight / 2),
           Center(
