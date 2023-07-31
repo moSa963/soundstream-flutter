@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soundstream_flutter/widgets/fade_shader_mask.dart';
 
 class OverflowAnimatedText extends StatefulWidget {
   const OverflowAnimatedText(
@@ -20,7 +21,8 @@ class OverflowAnimatedText extends StatefulWidget {
   State<OverflowAnimatedText> createState() => _OverflowAnimatedTextState();
 }
 
-class _OverflowAnimatedTextState extends State<OverflowAnimatedText> with SingleTickerProviderStateMixin {
+class _OverflowAnimatedTextState extends State<OverflowAnimatedText>
+    with SingleTickerProviderStateMixin {
   final GlobalKey _flexKey = GlobalKey();
   final GlobalKey _textKey = GlobalKey();
 
@@ -30,8 +32,7 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText> with Single
   void initState() {
     super.initState();
 
-    _animation = AnimationController.unbounded(
-        vsync: this);
+    _animation = AnimationController.unbounded(vsync: this);
 
     _animation.addStatusListener((status) async {
       if (status != AnimationStatus.completed) return;
@@ -64,41 +65,33 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText> with Single
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(),
-      clipBehavior: Clip.hardEdge,
-      child: ShaderMask(
-        shaderCallback: (rect) {
-          return LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.black,
-              (overflow <= 0 ? Colors.black : Colors.transparent)
+        decoration: const BoxDecoration(),
+        clipBehavior: Clip.hardEdge,
+        child: FadeShaderMask(
+          begin: Alignment.bottomCenter,
+          end: Alignment.bottomRight,
+          disabled: overflow <= 0,
+          rect: (rect) =>
+              Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height),
+          child: Row(
+            key: _flexKey,
+            children: [
+              AnimatedBuilder(
+                animation: _animation,
+                builder: (context, child) {
+                  return Transform.translate(
+                    offset: Offset(-_animation.value, 0),
+                    child: child,
+                  );
+                },
+                child: Text(widget.data,
+                    key: _textKey,
+                    style: widget.style,
+                    textScaleFactor: widget.textScaleFactor),
+              )
             ],
-          ).createShader(
-              Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height));
-        },
-        blendMode: BlendMode.dstIn,
-        child: Row(
-          key: _flexKey,
-          children: [
-            AnimatedBuilder(
-              animation: _animation,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(-_animation.value, 0),
-                  child: child,
-                );
-              },
-              child: Text(widget.data,
-                  key: _textKey,
-                  style: widget.style,
-                  textScaleFactor: widget.textScaleFactor),
-            )
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   double get overflow {
