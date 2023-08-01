@@ -28,18 +28,17 @@ class _ShowUserPageState extends State<ShowUserPage> {
       body: ListView(
         children: [
           SizedBox(
-            height: 300,
+            height: 250,
             child: Stack(
               children: [
                 Positioned.fill(
                   child: FadeShaderMask(
-                    child: _user != null
-                        ? Hero(
-                            tag: widget.username,
-                            child: Image.network(_user?.imgUri.toString() ?? "",
-                                fit: BoxFit.cover,
-                                alignment: Alignment.topCenter))
-                        : null,
+                    child: Hero(
+                        tag: "user ${widget.username}",
+                        child: Image.network(
+                            User.getImgUri(widget.username).toString(),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter)),
                   ),
                 ),
                 Positioned.fill(

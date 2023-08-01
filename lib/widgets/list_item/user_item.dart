@@ -12,7 +12,7 @@ class UserItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListItem(
       onTap: () => _openShowUserPage(context),
-      leading: AspectRatio(aspectRatio: 1, child: Hero(tag: user.username, child: Image.network(user.imgUri.toString(), fit: BoxFit.cover,))),
+      leading: AspectRatio(aspectRatio: 1, child: Hero(tag: "user ${user.username}", child: Image.network(user.imgUri.toString(), fit: BoxFit.cover,))),
       title: user.name,
       subtitle: "@${user.username}"
     );
