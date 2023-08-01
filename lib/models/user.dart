@@ -23,4 +23,8 @@ class User {
       createdAt: DateTime.tryParse(json['created_at'] ?? ""),
     );
   }
+
+  static Uri getImgUri(String username) {
+    return ApiService.uri("account/$username/profile/photo");
+  }
 }
