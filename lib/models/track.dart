@@ -39,7 +39,7 @@ class Track {
       title: json['title'] as String,
       writtenBy: json['written_by'] as String,
       performedBy: json['performed_by'] as String,
-      album: Playlist.fromJson(json['album']),
+      album: json['album'] != null ? Playlist.fromJson(json['album']) : null,
       explicit: json['explicit'] as bool,
       liked: json['liked'] as bool,
       duration: json['duration'] as int,
