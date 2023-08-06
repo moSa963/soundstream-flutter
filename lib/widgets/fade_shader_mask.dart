@@ -20,8 +20,8 @@ class FadeShaderMask extends StatelessWidget {
     return ShaderMask(
         shaderCallback: (r) {
           return LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: begin,
+            end: end,
             colors: [
               Colors.black,
               disabled ? Colors.black : Colors.transparent
