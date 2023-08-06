@@ -25,6 +25,7 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText>
     with SingleTickerProviderStateMixin {
   final GlobalKey _flexKey = GlobalKey();
   final GlobalKey _textKey = GlobalKey();
+  bool _disabled = true;
 
   late AnimationController _animation;
 
@@ -48,12 +49,35 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText>
       _animation.animateTo(_upperBound());
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (overflow <= 0) return;
+    WidgetsBinding.instance.addPostFrameCallback(initAnimation);
+  }
 
-      _animation.duration = duration;
-      _animation.animateTo(_upperBound());
-    });
+  void initAnimation(Duration time) {
+    if (overflow <= 0) {
+      _animation.value = 0;
+      _animation.stop();
+      return;
+    }
+
+    if (_disabled) {
+      setState(() {
+        _disabled = false;
+      });
+    }
+
+    _animation.value = 0;
+    _animation.duration = duration;
+    _animation.animateTo(_upperBound());
+  }
+
+  @override
+  void didUpdateWidget(covariant OverflowAnimatedText oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _disabled = true;
+
+    if (oldWidget.data != widget.data) {
+      WidgetsBinding.instance.addPostFrameCallback(initAnimation);
+    }
   }
 
   @override
@@ -70,7 +94,7 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText>
         child: FadeShaderMask(
           begin: Alignment.bottomCenter,
           end: Alignment.bottomRight,
-          disabled: overflow <= 0,
+          disabled: _disabled,
           rect: (rect) =>
               Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height),
           child: Row(
