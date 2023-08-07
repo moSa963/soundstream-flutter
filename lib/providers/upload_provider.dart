@@ -34,4 +34,8 @@ class UploadProvider extends Provider {
   List<Track>? tracksInProgress(Playlist playlist) {
     return _files[playlist.id];
   }
+
+  bool hasTracksInProgress(Playlist playlist) {
+    return _files[playlist.id]?.isNotEmpty ?? false;
+  }
 }
