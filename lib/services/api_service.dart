@@ -78,7 +78,13 @@ class ApiService {
       ..fields.addAll(fields ?? {});
 
     files?.forEach((key, value) async {
-      req.files.add(http.MultipartFile.fromBytes(key, value.bytes ?? [], filename: value.name));
+      late http.MultipartFile file;
+      try {
+        file = await http.MultipartFile.fromPath(key, value.path ?? "");
+      } catch(_) {
+        file = http.MultipartFile.fromBytes(key, value.bytes ?? [], filename: value.name);
+      }
+      req.files.add(file);
     });
 
     return _response(http.Response.fromStream(await req.send()));
