@@ -20,11 +20,11 @@ class PlaylistsProvider extends Provider {
     });
   }
 
-  Future<void> createPlaylist(Playlist playlist) async {
+  Future<void> createPlaylist(Playlist playlist, {bool album=false}) async {
     assert(playlist.id == -1);
 
     await withLoading(() async {
-      var res = await service.create(playlist);
+      var res = await service.create(playlist, album: album);
       _playlists.add(res);
     });
   }

@@ -15,8 +15,8 @@ class PlaylistService {
     return Playlist.fromJson(js["data"]);
   }
 
-  Future<Playlist> create(Playlist playlist) async {
-    final js = await api.post("playlists", {
+  Future<Playlist> create(Playlist playlist, {bool album=false}) async {
+    final js = await api.post(album ? "albums" : "playlists", {
       if (playlist.title != null) "title": playlist.title,
     });
 
