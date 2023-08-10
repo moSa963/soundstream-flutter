@@ -9,34 +9,44 @@ import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class PlayerPage extends StatelessWidget {
   const PlayerPage({super.key});
-  
-@override
+
+  @override
   Widget build(BuildContext context) {
     var provider = context.watch<AudioQueueProvider>();
 
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          children: [
-            img(),
-            const SizedBox(height: 15,),
-            title(provider.track),
-            const SizedBox(height: 25,),
-            AudioProgressBar(audio: provider.audio),
-            const SizedBox(height: 15,),
-            PlayerControlBar(audio: provider.audio),
-            const SizedBox(height: 25,),
-
-            for (var v in context.watch<AudioQueueProvider>().queue) TrackItem(key: Key(v.id.toString()), track: v, onTap: () => playTrack(context, v) ,)
-          ],
-        ),
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(children: [
+              img(context),
+              const SizedBox(height: 15),
+              title(provider.track),
+              const SizedBox(height: 25),
+              AudioProgressBar(audio: provider.audio),
+              const SizedBox(height: 15),
+              PlayerControlBar(audio: provider.audio),
+              const SizedBox(height: 25),
+            ]),
+          ),
+          for (var v in context.watch<AudioQueueProvider>().queue)
+            TrackItem(
+              key: Key(v.id.toString()),
+              track: v,
+              onTap: () => playTrack(context, v),
+            )
+        ],
+      ),
     );
   }
 
-  Widget img() {
+  Widget img(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxWidth: 150, maxHeight: 250),
+      constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width,
+          maxHeight: MediaQuery.of(context).size.height / 2),
       child: AspectRatio(
         aspectRatio: 1,
         child: Image.network(
@@ -46,7 +56,6 @@ class PlayerPage extends StatelessWidget {
   }
 
   Widget title(Track? track) {
-
     return Column(
       children: [
         OverflowAnimatedText(track?.title ?? "", textScaleFactor: 2),
@@ -60,7 +69,4 @@ class PlayerPage extends StatelessWidget {
   void playTrack(BuildContext context, Track track) {
     context.read<AudioQueueProvider>().seekTrack(track);
   }
-
-  
 }
-
