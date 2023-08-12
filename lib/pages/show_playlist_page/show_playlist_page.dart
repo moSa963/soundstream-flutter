@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/pages/show_playlist_page/show_playlist_banner.dart';
+import 'package:soundstream_flutter/providers/upload_provider.dart';
 import 'package:soundstream_flutter/services/playlist_service.dart';
 import 'package:soundstream_flutter/services/track_service.dart';
+import 'package:soundstream_flutter/widgets/list_item/uploading_item.dart';
 import 'package:soundstream_flutter/widgets/tracks_list.dart';
 
 class ShowPlaylistPage extends StatefulWidget {
@@ -29,11 +32,18 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
+    final uploadingTracks =
+        context.watch<UploadProvider>().tracksInProgress(widget.playlist);
+    
     return Scaffold(
       body: ListView(
         children: [
-          ShowPlaylistBanner(playlist: _playlist ?? widget.playlist),
-          TracksList(tracks: _tracks ?? [], updateTrack: updateTrack),
+          ShowPlaylistBanner(
+            playlist: _playlist ?? widget.playlist,
+            onTrackAdded: _handleTrackAdded,
+          ),
+          ...?uploadingTracks?.map<UploadingItem>((e) => UploadingItem(title: e.title,)).toList(),
+          TracksList(tracks: _tracks ?? [], updateTrack: _updateTrack),
         ],
       ),
     );
@@ -53,10 +63,16 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
     });
   }
 
-  void updateTrack(Track track) {
+  void _updateTrack(Track track) {
     setState(() {
       _tracks?[_tracks?.indexWhere((element) => element.id == track.id) ?? -1] =
           track;
+    });
+  }
+
+  void _handleTrackAdded(Track track) {
+    setState(() {
+      _tracks?.add(track);
     });
   }
 }
