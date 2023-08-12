@@ -1,4 +1,6 @@
 import 'package:soundstream_flutter/models/auth.dart';
+import 'package:soundstream_flutter/models/playlist.dart';
+import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
 import 'package:soundstream_flutter/services/auth_service.dart';
 
@@ -44,5 +46,13 @@ class AuthProvider extends Provider {
       await service.logout();
       auth = null;
     });
+  }
+
+  bool ownedPlaylist(Playlist playlist) {
+    return auth?.username != null && auth?.username == playlist.user?.username;
+  }
+
+  bool ownedTrack(Track track) {
+    return auth?.username != null && auth?.username == track.user?.username;
   }
 }
