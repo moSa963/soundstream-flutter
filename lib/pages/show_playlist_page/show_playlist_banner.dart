@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
-import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
+import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/providers/auth_provider.dart';
+import 'package:soundstream_flutter/widgets/button/upload_button.dart';
 import 'package:soundstream_flutter/widgets/page_banner.dart';
 import 'package:soundstream_flutter/widgets/bottom_sheet/update_playlist_sheet.dart';
-import 'package:soundstream_flutter/widgets/user_avatar.dart';
+import 'package:soundstream_flutter/widgets/user_chip.dart';
 
 class ShowPlaylistBanner extends StatelessWidget {
-  const ShowPlaylistBanner({super.key, required this.playlist});
+  const ShowPlaylistBanner(
+      {super.key, required this.playlist, this.onTrackAdded});
   final Playlist playlist;
+  final void Function(Track track)? onTrackAdded;
 
   @override
   Widget build(BuildContext context) {
@@ -30,31 +35,31 @@ class ShowPlaylistBanner extends StatelessWidget {
         IconButton(
             onPressed: () => _onUpdate(context), icon: const Icon(Icons.edit)),
       ],
-      actions: [_action(context)],
+      actions: _actions(context),
     );
   }
 
-  Widget _action(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ScaleGestureDetector(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              UserAvatar(user: playlist.user, maxWidth: 35),
-              Text(
-                "@${playlist.user?.username}",
-                style: Theme.of(context).textTheme.titleSmall,
-              )
-            ],
+  List<Widget> _actions(BuildContext context) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          UserChip(
+            user: playlist.user,
           ),
-        ),
-        const Text(" . "),
-        Text(
-            "${playlist.private ?? false ? 'Public' : 'Private'} ${playlist.tracksCount} track"),
-      ],
-    );
+          const Text(" . "),
+          Text(
+              "${playlist.private ?? false ? 'Public' : 'Private'} ${playlist.tracksCount} track"),
+        ],
+      ),
+      const Spacer(),
+      if (playlist.album == true &&
+          context.watch<AuthProvider>().ownedPlaylist(playlist))
+        UploadButton(
+          album: playlist,
+          onDone: onTrackAdded,
+        )
+    ];
   }
 
   void _onUpdate(BuildContext context) {
