@@ -14,6 +14,6 @@ class DurationFormat {
       res += "$hours:";
     }
 
-    return "$res$minutes:$rseconds";
+    return "$res${minutes.toString().padLeft(2, "0")}:${rseconds.toString().padLeft(2, "0")}";
   }
 }
