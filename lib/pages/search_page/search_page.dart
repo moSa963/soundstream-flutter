@@ -44,7 +44,7 @@ class _SearchPageState extends State<SearchPage> {
       body: ListView(
         children: [
           if (_filter.isEmpty || _filter == "tracks")
-            TracksList(tracks: _tracks),
+            TracksList(tracks: _tracks, updateTrack: _handleUpdate),
           if (_filter.isEmpty || _filter == "playlists")
             for (final playlist in _playlists) PlaylistItem(playlist: playlist),
           if (_filter.isEmpty || _filter == "users")
@@ -89,6 +89,13 @@ class _SearchPageState extends State<SearchPage> {
   void _handleChipPressed(String filter) {
     setState(() {
       _filter = filter == _filter ? "" : filter;
+    });
+  }
+
+  void _handleUpdate(Track track) {
+    int index = _tracks.indexOf(track);
+    setState(() {
+      _tracks[index] = track;
     });
   }
 }
