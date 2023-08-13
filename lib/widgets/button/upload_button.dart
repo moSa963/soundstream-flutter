@@ -1,9 +1,8 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
-import 'package:soundstream_flutter/providers/upload_provider.dart';
+import 'package:soundstream_flutter/widgets/dialog/upload_track_dialog.dart';
 
 class UploadButton extends StatelessWidget {
   const UploadButton({super.key, this.album, this.onDone});
@@ -19,13 +18,24 @@ class UploadButton extends StatelessWidget {
   }
 
   void _openPicker(BuildContext context) async {
-    final v = context.read<UploadProvider>();
-
     FilePickerResult? res = await FilePicker.platform.pickFiles();
 
     if (res == null || album == null) return;
 
-    final t = await v.uploadTrack(res.files[0], album ?? Playlist());
-    onDone?.call(t);
+    if (context.mounted) {
+      return _onUpload(context, res.files[0], album!);
+    }
+  }
+
+  void _onUpload(BuildContext context, PlatformFile? file, Playlist album) {
+    if (file == null) return;
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: UploadTrackDialog(file: file, album: album, onDone: onDone),
+          );
+        });
   }
 }
