@@ -4,6 +4,7 @@ import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/utils/validator.dart';
 import 'package:soundstream_flutter/widgets/bottom_sheet/bottom_sheet.dart';
+import 'package:soundstream_flutter/widgets/dialog/confirmation_dialog.dart';
 
 class UpdatePlaylistSheet extends StatefulWidget {
   const UpdatePlaylistSheet({super.key, required this.playlist});
@@ -112,38 +113,21 @@ class _UpdatePlaylistSheetState extends State<UpdatePlaylistSheet> {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text('Delete playlist'),
-          content: const Text(
-              "Are you sure you want to permanently delete this playlist?"),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Yes'),
-              onPressed: () async {
-                await context
-                    .read<PlaylistsProvider>()
-                    .deletePlaylist(widget.playlist);
+        return ConfirmationDialog(
+          title: "Delete playlist",
+          subtitle:
+              "Are you sure you want to permanently delete this playlist?",
+          onConfirmed: () async {
+            await context
+                .read<PlaylistsProvider>()
+                .deletePlaylist(widget.playlist);
 
-                if (context.mounted) {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                }
-              },
-            ),
-          ],
+            if (context.mounted) {
+              Navigator.pop(context);
+              Navigator.pop(context);
+              Navigator.pop(context);
+            }
+          },
         );
       },
     );
