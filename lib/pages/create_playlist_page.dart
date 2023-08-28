@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
+import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 
 class CreatePlaylistPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PageLayout(
       appBar: AppBar(
         title: const Text("Create playlist"),
       ),
@@ -29,6 +30,7 @@ class _CreatePlaylistPageState extends State<CreatePlaylistPage> {
           ]),
         ),
       ),
+
     );
   }
 

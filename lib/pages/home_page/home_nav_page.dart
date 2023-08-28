@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/pages/home_page/home_page.dart';
 import 'package:soundstream_flutter/pages/home_page/home_page_bottom_navigator.dart';
 import 'package:soundstream_flutter/pages/library_page/library_page.dart';
+import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/pages/search_page/search_page.dart';
 
 class HomeNavPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _HomeNavPageState extends State<HomeNavPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PageLayout(
       body: widget.pages[_index],
       bottomNavigationBar: HomePageBottomNavigator(
         index: _index,

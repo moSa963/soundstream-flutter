@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
 import 'package:soundstream_flutter/widgets/page_banner.dart';
 import 'package:soundstream_flutter/widgets/tracks_list.dart';
@@ -23,7 +24,7 @@ class _LikesPageState extends State<LikesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PageLayout(
       body: ListView(
         children: [
           PageBanner(

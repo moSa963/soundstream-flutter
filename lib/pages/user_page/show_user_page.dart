@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/user.dart';
+import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/services/user_service.dart';
 import 'package:soundstream_flutter/widgets/button/navigator_back_button.dart';
 import 'package:soundstream_flutter/widgets/fade_shader_mask.dart';
@@ -24,7 +25,7 @@ class _ShowUserPageState extends State<ShowUserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PageLayout(
       body: ListView(
         children: [
           SizedBox(

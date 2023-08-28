@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/pages/show_playlist_page/show_playlist_banner.dart';
 import 'package:soundstream_flutter/providers/upload_provider.dart';
 import 'package:soundstream_flutter/services/playlist_service.dart';
@@ -35,7 +36,7 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
     final uploadingTracks =
         context.watch<UploadProvider>().tracksInProgress(widget.playlist);
     
-    return Scaffold(
+    return PageLayout(
       body: ListView(
         children: [
           ShowPlaylistBanner(

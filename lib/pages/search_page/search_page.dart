@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/models/user.dart';
+import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/services/search_service.dart';
 import 'package:soundstream_flutter/widgets/list_item/playlist_item.dart';
 import 'package:soundstream_flutter/widgets/list_item/user_item.dart';
@@ -24,7 +25,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PageLayout(
       appBar: AppBar(
           title: TimedTextField(
             hintText: "Search",
