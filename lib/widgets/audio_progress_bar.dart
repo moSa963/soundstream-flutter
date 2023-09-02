@@ -1,5 +1,5 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/utils/duration_format.dart';
 
 class AudioProgressBar extends StatelessWidget {
@@ -17,22 +17,24 @@ class AudioProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Duration?>(
-        stream: audio?.durationStream,
-        builder: (context, snapshot) {
+        stream: audio?.onDurationChanged,
+        builder: (context, durationSnapshot) {
           return StreamBuilder<Duration?>(
-              stream: audio?.positionStream,
+              stream: audio?.onPositionChanged,
               builder: (context, snapshot) {
                 return Column(
                   children: [
-                    slider(snapshot),
-                    if (!noLabels) labels(snapshot),
+                    slider(snapshot,
+                        (durationSnapshot.data?.inSeconds ?? 0) + 0.0),
+                    if (!noLabels)
+                      labels(snapshot, durationSnapshot.data ?? Duration.zero),
                   ],
                 );
               });
         });
   }
 
-  Widget slider(AsyncSnapshot<Duration?> snapshot) {
+  Widget slider(AsyncSnapshot<Duration?> snapshot, double max) {
     return SliderTheme(
         data: SliderThemeData(
           thumbShape: RoundSliderThumbShape(
@@ -44,7 +46,7 @@ class AudioProgressBar extends StatelessWidget {
         ),
         child: Slider(
           min: 0,
-          max: audio?.duration?.inSeconds.toDouble() ?? 0.0,
+          max: max,
           value: snapshot.data?.inSeconds.toDouble() ?? 0,
           onChanged: (v) {
             if (noSeek) return;
@@ -53,14 +55,14 @@ class AudioProgressBar extends StatelessWidget {
         ));
   }
 
-  Widget labels(AsyncSnapshot<Duration?> snapshot) {
+  Widget labels(AsyncSnapshot<Duration?> snapshot, Duration duration) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(DurationFormat.toHms(snapshot.data)),
-          Text(DurationFormat.toHms(audio?.duration)),
+          Text(DurationFormat.toHms(duration)), 
         ],
       ),
     );
