@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/track.dart';
-import 'package:soundstream_flutter/pages/player_page/player_page.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
@@ -19,23 +18,17 @@ class TracksList extends StatelessWidget {
           TrackItem(
             key: Key(track.id.toString()),
             track: track,
-            onTap: () => onTap == null ? handleTap(context, track) : onTap!.call(track),
+            onTap: () => onTap == null ? _handleTap(context, track) : onTap!.call(track),
             updateTrack: updateTrack,
           ),
       ],
     );
   }
 
-  void handleTap(BuildContext context, Track track) {
+  void _handleTap(BuildContext context, Track track) {
     context
         .read<AudioQueueProvider>()
         .setList(tracks, index: tracks.indexOf(track));
-
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return const PlayerPage();
-      },
-    ));
   }
 
 }
