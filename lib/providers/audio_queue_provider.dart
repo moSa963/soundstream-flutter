@@ -6,6 +6,15 @@ class AudioQueueProvider extends Provider {
   List<Track> _queue;
   List<Track> get queue => _queue;
 
+  Duration? _duration;
+  Duration? get duration => _duration;
+
+  Duration? _position;
+  Duration? get position => _position;
+
+  PlayerState _state = PlayerState.paused;
+  PlayerState get state => _state;
+
   final AudioPlayer _player;
   AudioPlayer get player => _player;
 
@@ -17,7 +26,20 @@ class AudioQueueProvider extends Provider {
   AudioQueueProvider()
       : _queue = [],
         _player = AudioPlayer() {
-    _player.setReleaseMode(ReleaseMode.release);
+    _player.onDurationChanged.listen((event) {
+      _duration = event;
+      notifyListeners();
+    });
+
+    _player.onPositionChanged.listen((event) {
+      _position = event;
+      notifyListeners();
+    });
+
+    _player.onPlayerStateChanged.listen((event) {
+      _state = event;
+      notifyListeners();
+    });
   }
 
   Future<void> setList(List<Track> list, {int index = 0}) async {
