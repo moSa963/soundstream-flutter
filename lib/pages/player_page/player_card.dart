@@ -18,7 +18,7 @@ class PlayerCard extends StatelessWidget {
       const SizedBox(height: 15),
       _title(provider.track),
       const SizedBox(height: 25),
-      AudioProgressBar(audio: provider.player),
+      const AudioProgressBar(),
       const SizedBox(height: 15),
       PlayerControlBar(audio: provider.player),
       const SizedBox(height: 25),

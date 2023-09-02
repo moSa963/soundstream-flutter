@@ -24,7 +24,7 @@ class PlayerControlBar extends StatelessWidget {
             const SizedBox(
               width: 10,
             ),
-            AudioPlayButton(audio: audio),
+            const AudioPlayButton(),
             const SizedBox(
               width: 10,
             ),
