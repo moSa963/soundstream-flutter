@@ -6,12 +6,17 @@ import 'package:soundstream_flutter/widgets/list_item/list_item.dart';
 
 class TrackItem extends StatelessWidget {
   final _service = const LikesService();
+  final bool withHero;
   final Track track;
   final void Function(Track track)? updateTrack;
   final void Function()? onTap;
 
   const TrackItem(
-      {super.key, required this.track, this.onTap, this.updateTrack});
+      {super.key,
+      required this.track,
+      this.onTap,
+      this.updateTrack,
+      this.withHero = false});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +24,9 @@ class TrackItem extends StatelessWidget {
       onTap: onTap,
       leading: AspectRatio(
           aspectRatio: 1,
-          child: Hero(
-              tag: "track ${track.id}",
-              child: Image.network(
-                track.imgUri.toString(),
-                fit: BoxFit.cover,
-              ))),
+          child: withHero
+              ? Hero(tag: "track ${track.id}", child: _image())
+              : _image()),
       title: track.title,
       subtitle: track.album?.title ?? "",
       actions: [
@@ -33,6 +35,13 @@ class TrackItem extends StatelessWidget {
           onChange: _like,
         ),
       ],
+    );
+  }
+
+  Widget _image() {
+    return Image.network(
+      track.imgUri.toString(),
+      fit: BoxFit.cover,
     );
   }
 
