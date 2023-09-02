@@ -21,41 +21,39 @@ class ListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
-      child: ScaleGestureDetector(
-          onTap: onTap,
-          onLongPress: onLongPress,
-          child: Container(
-            color: Colors.transparent,
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 50,
-                  child: leading,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        title,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      _subtitle(),
-                    ],
-                  ),
-                ),
-                Wrap(
-                  children: actions ?? [],
-                )
-              ],
+    return ScaleGestureDetector(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      child: Container(
+        color: Colors.transparent,
+        child: Row(
+          children: [
+            SizedBox(
+              height: 50,
+              child: leading,
             ),
-          )),
+            const SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  _subtitle(),
+                ],
+              ),
+            ),
+            Wrap(
+              children: actions ?? [],
+            )
+          ],
+        ),
+      ),
     );
   }
 
