@@ -1,5 +1,5 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/button/audio_play_button.dart';
@@ -38,20 +38,23 @@ class PlayerControlBar extends StatelessWidget {
     );
   }
 
-  void _backward(BuildContext context) {
-    context.read<AudioQueueProvider>().backward();
+  void _backward(BuildContext context) async {
+    await context.read<AudioQueueProvider>().backward();
   }
 
-  void _onBackwardTap(BuildContext context) {
-    if ((audio?.position.inSeconds ?? 0) < 10) return _backward(context);
-    _reset(context);
+  void _onBackwardTap(BuildContext context) async {
+    final pos = (await audio?.getCurrentPosition())?.inSeconds ?? 0;
+
+    if (context.mounted) {
+      pos > 10 ? _reset(context) : _backward(context);
+    }
   }
 
   void _reset(BuildContext context) {
     context.read<AudioQueueProvider>().reset();
   }
 
-  void _forward(BuildContext context) {
-    context.read<AudioQueueProvider>().forward();
+  void _forward(BuildContext context) async {
+    await context.read<AudioQueueProvider>().forward();
   }
 }
