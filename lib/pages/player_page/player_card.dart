@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/pages/player_page/player_control_bar.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
-import 'package:soundstream_flutter/widgets/audio_progress_bar.dart';
+import 'package:soundstream_flutter/widgets/audio_player/audio_progress_bar.dart';
 import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
 
 class PlayerCard extends StatelessWidget {
@@ -13,19 +13,16 @@ class PlayerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = context.watch<AudioQueueProvider>();
 
-    return StreamBuilder<int?>(
-      stream: provider.player.currentIndexStream,
-      builder: (context, snapshot) => Column(children: [
-        _img(context, provider.track),
-        const SizedBox(height: 15),
-        _title(provider.track),
-        const SizedBox(height: 25),
-        AudioProgressBar(audio: provider.player),
-        const SizedBox(height: 15),
-        PlayerControlBar(audio: provider.player),
-        const SizedBox(height: 25),
-      ]),
-    );
+    return Column(children: [
+      _img(context, provider.track),
+      const SizedBox(height: 15),
+      _title(provider.track),
+      const SizedBox(height: 25),
+      AudioProgressBar(audio: provider.player),
+      const SizedBox(height: 15),
+      PlayerControlBar(audio: provider.player),
+      const SizedBox(height: 25),
+    ]);
   }
 
   Widget _img(BuildContext context, Track? track) {

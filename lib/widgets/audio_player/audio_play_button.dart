@@ -10,9 +10,7 @@ class AudioPlayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamBuilder<PlayerState>(
       stream: audio?.onPlayerStateChanged,
-      builder: (context, snapshot) => IconButton.outlined(
-          style: const ButtonStyle(
-              padding: MaterialStatePropertyAll(EdgeInsets.all(3))),
+      builder: (context, snapshot) => IconButton(
           onPressed: onPressed,
           icon: Icon(
             snapshot.data == PlayerState.playing
