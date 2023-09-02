@@ -1,5 +1,5 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 
 class AudioPlayButton extends StatelessWidget {
   const AudioPlayButton({super.key, this.audio, this.size = 50});
@@ -9,13 +9,15 @@ class AudioPlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PlayerState>(
-      stream: audio?.playerStateStream,
+      stream: audio?.onPlayerStateChanged,
       builder: (context, snapshot) => IconButton.outlined(
           style: const ButtonStyle(
               padding: MaterialStatePropertyAll(EdgeInsets.all(3))),
           onPressed: onPressed,
           icon: Icon(
-            snapshot.data?.playing ?? false ? Icons.pause : Icons.play_arrow,
+            snapshot.data == PlayerState.playing
+                ? Icons.pause
+                : Icons.play_arrow,
             size: size,
           ),
           padding: const EdgeInsets.all(0)),
@@ -23,8 +25,6 @@ class AudioPlayButton extends StatelessWidget {
   }
 
   void onPressed() {
-    if (audio?.playing != null) {
-      audio?.playing ?? false ? audio?.pause() : audio?.play();
-    }
+    audio?.state == PlayerState.playing ? audio?.pause() : audio?.resume();
   }
 }
