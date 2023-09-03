@@ -5,7 +5,7 @@ class OverflowAnimatedText extends StatefulWidget {
   const OverflowAnimatedText(
     this.data, {
     super.key,
-    this.speed = 20,
+    this.speed = 40,
     this.delay = 5,
     this.style,
     this.textScaleFactor,
@@ -21,70 +21,8 @@ class OverflowAnimatedText extends StatefulWidget {
   State<OverflowAnimatedText> createState() => _OverflowAnimatedTextState();
 }
 
-class _OverflowAnimatedTextState extends State<OverflowAnimatedText>
-    with SingleTickerProviderStateMixin {
-  final GlobalKey _flexKey = GlobalKey();
-  final GlobalKey _textKey = GlobalKey();
-  bool _disabled = true;
-
-  late AnimationController _animation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _animation = AnimationController.unbounded(vsync: this);
-
-    _animation.addStatusListener((status) async {
-      if (status != AnimationStatus.completed) return;
-
-      if (_animation.value != 0) {
-        _animation.duration = const Duration(seconds: 1);
-        _animation.animateTo(0);
-        return;
-      }
-
-      await Future.delayed(Duration(seconds: widget.delay));
-      _animation.duration = duration;
-      _animation.animateTo(_upperBound());
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback(initAnimation);
-  }
-
-  void initAnimation(Duration time) {
-    if (overflow <= 0) {
-      _animation.value = 0;
-      _animation.stop();
-      return;
-    }
-
-    if (_disabled) {
-      setState(() {
-        _disabled = false;
-      });
-    }
-
-    _animation.value = 0;
-    _animation.duration = duration;
-    _animation.animateTo(_upperBound());
-  }
-
-  @override
-  void didUpdateWidget(covariant OverflowAnimatedText oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _disabled = true;
-
-    if (oldWidget.data != widget.data) {
-      WidgetsBinding.instance.addPostFrameCallback(initAnimation);
-    }
-  }
-
-  @override
-  void dispose() {
-    _animation.dispose();
-    super.dispose();
-  }
+class _OverflowAnimatedTextState extends State<OverflowAnimatedText> {
+  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -92,42 +30,59 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText>
         decoration: const BoxDecoration(),
         clipBehavior: Clip.hardEdge,
         child: FadeShaderMask(
-          begin: Alignment.bottomCenter,
-          end: Alignment.bottomRight,
-          disabled: _disabled,
-          rect: (rect) =>
-              Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height),
-          child: Row(
-            key: _flexKey,
-            children: [
-              AnimatedBuilder(
-                animation: _animation,
-                builder: (context, child) {
-                  return Transform.translate(
-                    offset: Offset(-_animation.value, 0),
-                    child: child,
-                  );
-                },
-                child: Text(widget.data,
-                    key: _textKey,
-                    style: widget.style,
-                    textScaleFactor: widget.textScaleFactor),
-              )
-            ],
-          ),
-        ));
+            begin: Alignment.bottomCenter,
+            end: Alignment.bottomRight,
+            disabled: _scrollController.hasClients &&
+                _scrollController.position.maxScrollExtent == 0,
+            rect: (rect) =>
+                Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height),
+            child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Text(
+                      widget.data,
+                      textScaleFactor: widget.textScaleFactor,
+                      style: widget.style,
+                    ),
+                  ],
+                ))));
   }
 
-  double get overflow {
-    double textWidth = _textKey.currentContext?.size?.width ?? 0;
-    double flexWidth = _flexKey.currentContext?.size?.width ?? 0;
-
-    return textWidth - flexWidth;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _start();
+    });
   }
 
-  Duration get duration => Duration(seconds: _upperBound() ~/ widget.speed);
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
 
-  double _upperBound() {
-    return overflow + (_flexKey.currentContext?.size?.width ?? 0) ~/ 2;
+  void _start() async {
+    if (!_scrollController.hasClients ||
+        _scrollController.position.maxScrollExtent == 0) return;
+
+    await _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(
+            seconds:
+                _scrollController.position.maxScrollExtent ~/ widget.speed),
+        curve: Curves.linear);
+
+    if (!_scrollController.hasClients) return;
+    await _scrollController.animateTo(0,
+        duration: const Duration(seconds: 1), curve: Curves.linear);
+
+    if (!_scrollController.hasClients) return;
+    await Future.delayed(Duration(seconds: widget.delay));
+
+    _start();
   }
 }
