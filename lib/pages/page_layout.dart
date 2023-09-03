@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
+import 'package:soundstream_flutter/widgets/audio_player/audio_player_bar.dart';
 
 class PageLayout extends StatelessWidget {
   const PageLayout(
@@ -11,7 +14,13 @@ class PageLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
-      body: body,
+      body: Column(
+        children: [
+          Expanded(child: body),
+          if (context.watch<AudioQueueProvider>().index != null)
+            const AudioPlayerBar()
+        ],
+      ),
       bottomNavigationBar: bottomNavigationBar,
     );
   }
