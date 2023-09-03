@@ -16,6 +16,7 @@ class AudioPlayerBar extends StatelessWidget {
     var provider = context.watch<AudioQueueProvider>();
 
     return Container(
+      constraints: const BoxConstraints(maxWidth: 800),
       margin: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
