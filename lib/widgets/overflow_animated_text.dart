@@ -23,39 +23,15 @@ class OverflowAnimatedText extends StatefulWidget {
 
 class _OverflowAnimatedTextState extends State<OverflowAnimatedText> {
   final _scrollController = ScrollController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(),
-        clipBehavior: Clip.hardEdge,
-        child: FadeShaderMask(
-            begin: Alignment.bottomCenter,
-            end: Alignment.bottomRight,
-            disabled: _scrollController.hasClients &&
-                _scrollController.position.maxScrollExtent == 0,
-            rect: (rect) =>
-                Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height),
-            child: SingleChildScrollView(
-                controller: _scrollController,
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Text(
-                      widget.data,
-                      textScaleFactor: widget.textScaleFactor,
-                      style: widget.style,
-                    ),
-                  ],
-                ))));
-  }
-
+  bool _overflown = false;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _start();
+      setState(() {
+        _overflown = isOverflown();
+      });
     });
   }
 
@@ -65,9 +41,40 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText> {
     _scrollController.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerLeft,
+        decoration: const BoxDecoration(),
+        clipBehavior: Clip.hardEdge,
+        child: FadeShaderMask(
+            begin: Alignment.bottomCenter,
+            end: Alignment.bottomRight,
+            disabled: !_overflown,
+            rect: (rect) =>
+                Rect.fromLTRB(rect.width * 0.5, 0, rect.width, rect.height),
+            child: SingleChildScrollView(
+                controller: _scrollController,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.data,
+                      textScaleFactor: widget.textScaleFactor,
+                      style: widget.style,
+                    ),
+                    const SizedBox(
+                      width: 100,
+                    )
+                  ],
+                ))));
+  }
+
   void _start() async {
-    if (!_scrollController.hasClients ||
-        _scrollController.position.maxScrollExtent == 0) return;
+    if (!isOverflown()) return;
 
     await _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -84,5 +91,12 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText> {
     await Future.delayed(Duration(seconds: widget.delay));
 
     _start();
+  }
+
+  bool isOverflown() {
+    return _scrollController.hasClients &&
+        (_scrollController.position.maxScrollExtent -
+                (100 * _scrollController.position.devicePixelRatio)) >
+            0;
   }
 }
