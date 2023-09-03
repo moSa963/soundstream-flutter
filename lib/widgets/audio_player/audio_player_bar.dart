@@ -31,15 +31,18 @@ class AudioPlayerBar extends StatelessWidget {
           color: Theme.of(context).colorScheme.secondary.withAlpha(50),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                      child: TrackItem(
-                          onTap: () => _openPlayerPage(context),
-                          track: provider.track ?? Track(),
-                          withHero: false)),
-                  const AudioPlayButton(),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(5),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TrackItem(
+                            onTap: () => _openPlayerPage(context),
+                            track: provider.track ?? Track(),
+                            withHero: false)),
+                    const AudioPlayButton(),
+                  ],
+                ),
               ),
               const AudioProgressBar(
                 noLabels: true,
