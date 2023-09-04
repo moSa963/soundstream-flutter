@@ -5,7 +5,8 @@ import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class TracksList extends StatelessWidget {
-  const TracksList({super.key, required this.tracks, this.updateTrack, this.onTap});
+  const TracksList(
+      {super.key, required this.tracks, this.updateTrack, this.onTap});
   final List<Track> tracks;
   final void Function(Track)? updateTrack;
   final void Function(Track)? onTap;
@@ -18,8 +19,10 @@ class TracksList extends StatelessWidget {
           TrackItem(
             key: Key(track.id.toString()),
             track: track,
-            onTap: () => onTap == null ? _handleTap(context, track) : onTap!.call(track),
+            onTap: () =>
+                onTap == null ? _handleTap(context, track) : onTap!.call(track),
             updateTrack: updateTrack,
+            onLongPress: () => _handleLongPress(context, track),
           ),
       ],
     );
@@ -31,4 +34,7 @@ class TracksList extends StatelessWidget {
         .setList(tracks, index: tracks.indexOf(track));
   }
 
+  void _handleLongPress(BuildContext context, Track track) {
+
+  }
 }
