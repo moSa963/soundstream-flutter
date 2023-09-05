@@ -33,6 +33,7 @@ class _PlaylistPickerDialogState extends State<PlaylistPickerDialog> {
             _searchValue = value;
           }),
         ),
+        const Divider(),
         for (var playlist in playlists)
           if ((playlist.title?.contains(_searchValue) ?? true) &&
               (widget.filter
