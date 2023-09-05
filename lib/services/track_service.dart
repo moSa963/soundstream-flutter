@@ -27,4 +27,12 @@ class TrackService {
   Future<void> destroy(Track track) async {
     await api.delete("tracks/${track.id}");
   }
+
+  Future<void> removeFromPlaylist(Playlist playlist, Track track) async {
+    await api.delete("playlists/${playlist.id}/tracks/${track.id}");
+  }
+
+  Future<void> addToPlaylist(Playlist playlist, Track track) async {
+    await api.post("playlists/${playlist.id}/tracks/${track.id}", {});
+  }
 }
