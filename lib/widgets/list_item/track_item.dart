@@ -10,17 +10,20 @@ class TrackItem extends StatelessWidget {
   final Track track;
   final void Function(Track track)? updateTrack;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   const TrackItem(
       {super.key,
       required this.track,
       this.onTap,
+      this.onLongPress,
       this.updateTrack,
       this.withHero = false});
 
   @override
   Widget build(BuildContext context) {
     return ListItem(
+      onLongPress: onLongPress,
       onTap: onTap,
       leading: AspectRatio(
           aspectRatio: 1,
@@ -55,4 +58,5 @@ class TrackItem extends StatelessWidget {
     track.liked = newValue;
     updateTrack?.call(track);
   }
+
 }
