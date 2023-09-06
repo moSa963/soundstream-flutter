@@ -3,11 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
+import 'package:soundstream_flutter/widgets/bottom_sheet/track_options_sheet.dart';
 import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class TracksList extends StatelessWidget {
   const TracksList(
-      {super.key, required this.tracks, this.updateTrack, this.onTap, this.playlist});
+      {super.key,
+      required this.tracks,
+      this.updateTrack,
+      this.onTap,
+      this.playlist});
   final List<Track> tracks;
   final Playlist? playlist;
   final void Function(Track)? updateTrack;
@@ -37,6 +42,13 @@ class TracksList extends StatelessWidget {
   }
 
   void _handleLongPress(BuildContext context, Track track) {
-
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return TrackOptionsSheet(
+            track: track,
+            playlist: playlist,
+          );
+        });
   }
 }
