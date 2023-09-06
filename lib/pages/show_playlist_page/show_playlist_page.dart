@@ -44,7 +44,7 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
             onTrackAdded: _handleTrackAdded,
           ),
           ...?uploadingTracks?.map<UploadingItem>((e) => UploadingItem(title: e.title,)).toList(),
-          TracksList(tracks: _tracks ?? [], updateTrack: _updateTrack),
+          TracksList(tracks: _tracks ?? [], updateTrack: _updateTrack, playlist: _playlist),
         ],
       ),
     );
