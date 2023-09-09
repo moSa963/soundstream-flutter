@@ -1,15 +1,17 @@
 import 'package:soundstream_flutter/models/playlist.dart';
+import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
 
 class PlaylistService {
   const PlaylistService();
   final api = const ApiService();
 
-  Future<List<Playlist>> list() async {
-    final js = await api.get("playlists");
+  ///Use [user] parameter to get only playlists that belong to the user
+  Future<List<Playlist>> list({User? user}) async {
+    final js = await api.get(user == null ? "playlists" : "users/${user.username}/playlists");
     return (js["data"] as List<dynamic>).map((v) => Playlist.fromJson(v)).toList();
   }
-
+  
   Future<Playlist> get(int id) async {
     final js = await api.get("playlists/$id");
     return Playlist.fromJson(js["data"]);
