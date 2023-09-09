@@ -16,14 +16,6 @@ class TrackService {
     return (js["data"] as List<dynamic>).map((v) => Track.fromJson(v)).toList();
   }
 
-  Future<Track> create(Playlist playlist) async {
-    final js = await api.post("tracks/albums/${playlist.id}", {
-      //TODO
-    });
-
-    return Track.fromJson(js["data"]);
-  }
-
   Future<void> destroy(Track track) async {
     await api.delete("tracks/${track.id}");
   }
