@@ -14,14 +14,19 @@ class PlayerCard extends StatelessWidget {
     var provider = context.watch<AudioQueueProvider>();
 
     return Column(children: [
-      _img(context, provider.track),
-      const SizedBox(height: 15),
-      _title(provider.track),
-      const SizedBox(height: 25),
-      const AudioProgressBar(),
-      const SizedBox(height: 15),
-      PlayerControlBar(audio: provider.player),
-      const SizedBox(height: 25),
+      Expanded(flex: 3, child: _img(context, provider.track)),
+      Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              children: [
+                _title(provider.track),
+                const AudioProgressBar(),
+                PlayerControlBar(audio: provider.player),
+              ],
+            ),
+          )),
     ]);
   }
 
