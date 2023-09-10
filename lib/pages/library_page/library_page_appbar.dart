@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/pages/create_album_page.dart';
 import 'package:soundstream_flutter/pages/create_playlist_page.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
+import 'package:soundstream_flutter/widgets/bottom_sheet/bottom_sheet.dart';
 import 'package:soundstream_flutter/widgets/user_avatar.dart';
 
 class LibraryPageAppbar extends StatelessWidget implements PreferredSizeWidget {
@@ -35,19 +36,16 @@ class LibraryPageAppbar extends StatelessWidget implements PreferredSizeWidget {
     showModalBottomSheet(
         context: context,
         builder: (context) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                    onPressed: () =>
-                        openPage(context, const CreatePlaylistPage()),
-                    child: const Text("Create Playlist")),
-                TextButton(
-                    onPressed: () => openPage(context, const CreateAlbumPage()),
-                    child: const Text("Create Album")),
-              ],
-            ),
+          return BottomSheetCard(
+            children: [
+              TextButton(
+                  onPressed: () =>
+                      openPage(context, const CreatePlaylistPage()),
+                  child: const Text("Create Playlist")),
+              TextButton(
+                  onPressed: () => openPage(context, const CreateAlbumPage()),
+                  child: const Text("Create Album")),
+            ],
           );
         });
   }
