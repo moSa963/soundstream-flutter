@@ -6,12 +6,15 @@ class TextTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      data,
-      style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.bold),
-      textScaleFactor: 1.8,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 5),
+      child: Text(
+        data,
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.bold),
+        textScaleFactor: 1.8,
+      ),
     );
   }
 }
