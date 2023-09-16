@@ -22,37 +22,30 @@ class HorizontalListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-        aspectRatio: .5,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: ScaleGestureDetector(
-            onTap: onTap,
-            onLongPress: onLongPress,
-            child: Column(
-              children: [
-                SizedBox(
-                  child: leading,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    _subtitle(),
-                  ],
-                ),
-                Wrap(
-                  children: actions ?? [],
-                )
-              ],
-            ),
+      aspectRatio: .8,
+      child: Padding(
+        padding: const EdgeInsets.all(1),
+        child: ScaleGestureDetector(
+          onTap: onTap,
+          onLongPress: onLongPress,
+          child: Column(
+            children: [
+              if (leading != null) Expanded(child: leading!),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  _subtitle(),
+                ],
+              ),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _subtitle() {
