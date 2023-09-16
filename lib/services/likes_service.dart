@@ -9,8 +9,8 @@ class LikesService {
   final api = const ApiService();
 
   ///Use [user] parameter to get only tracks that belong to the user
-  Future<List<Track>> likedTracks({User? user}) async {
-    final js = await api.get("likes");
+  Future<List<Track>> likedTracks({User? user, int? count}) async {
+    final js = await api.get("likes${count == null ? "" : "?count=$count"}");
     return (js["data"] as List<dynamic>).map((v) => Track.fromJson(v)).toList();
   }
 
