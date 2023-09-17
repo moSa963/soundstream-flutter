@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/models/api_service_exaption.dart';
 
 class ApiService {
@@ -72,7 +73,8 @@ class ApiService {
     await _storage.write(key: "token", value: token);
   }
 
-  Future<Map<String, dynamic>> multipartRequest(String method, String url, {Map<String, PlatformFile>? files, Map<String, String>? fields }) async {
+  Future<Map<String, dynamic>> multipartRequest(String method, String url,
+      {Map<String, PlatformFile>? files, Map<String, String>? fields}) async {
     final req = http.MultipartRequest(method, uri(url))
       ..headers.addAll(await _getHeaders())
       ..fields.addAll(fields ?? {});
@@ -81,12 +83,17 @@ class ApiService {
       late http.MultipartFile file;
       try {
         file = await http.MultipartFile.fromPath(key, value.path ?? "");
-      } catch(_) {
-        file = http.MultipartFile.fromBytes(key, value.bytes ?? [], filename: value.name);
+      } catch (_) {
+        file = http.MultipartFile.fromBytes(key, value.bytes ?? [],
+            filename: value.name);
       }
       req.files.add(file);
     });
 
     return _response(http.Response.fromStream(await req.send()));
+  }
+
+  Future<Duration?> setAudioPlayerUrl(AudioPlayer player, String url) async {
+    return player.setUrl(url, headers: await _getHeaders());
   }
 }
