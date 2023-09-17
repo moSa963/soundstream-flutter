@@ -4,6 +4,7 @@ import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/services/history_service.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
+import 'package:soundstream_flutter/widgets/horizontal_list.dart';
 import 'package:soundstream_flutter/widgets/list_item/playlist_item.dart';
 import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 import 'package:soundstream_flutter/widgets/text_title.dart';
@@ -40,9 +41,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         body: ListView(clipBehavior: Clip.none, children: [
-          const SizedBox(
-            height: 10,
-          ),
           const TextTitle("Your Playlsits"),
           Wrap(
             children: [
@@ -53,41 +51,27 @@ class _HomePageState extends State<HomePage> {
                       child: PlaylistItem(playlist: playlists[i])),
             ],
           ),
-          const SizedBox(
-            height: 40,
+          HorizontalList(
+            title: "You liked",
+            padding: const EdgeInsets.only(top: 25),
+            children: [
+              for (var track in _likedTracks)
+                TrackItem(
+                  track: track,
+                  direction: Axis.horizontal,
+                )
+            ],
           ),
-          const TextTitle("You liked"),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                for (var track in _likedTracks)
-                  TrackItem(
-                    track: track,
-                    direction: Axis.horizontal,
-                  )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          const TextTitle("Latest played"),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              children: [
-                for (var track in _historyTracks)
-                  TrackItem(
-                    track: track,
-                    direction: Axis.horizontal,
-                  )
-              ],
-            ),
+          HorizontalList(
+            title: "Latest played",
+            padding: const EdgeInsets.only(top: 25),
+            children: [
+              for (var track in _historyTracks)
+                TrackItem(
+                  track: track,
+                  direction: Axis.horizontal,
+                )
+            ],
           ),
         ]));
   }
