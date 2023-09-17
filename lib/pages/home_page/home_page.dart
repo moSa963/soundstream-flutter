@@ -71,6 +71,9 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 40,
+          ),
           const TextTitle("Latest played"),
           SizedBox(
             height: 150,
@@ -90,13 +93,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadData() async {
-    var likedTracks = await _likesService.likedTracks(count: 4);
+    var likedTracks = await _likesService.likedTracks(count: 6);
 
     setState(() {
       _likedTracks = likedTracks;
     });
 
-    var historyTracks = await _historyService.list(count: 4);
+    var historyTracks = await _historyService.list(count: 6);
 
     setState(() {
       _historyTracks = historyTracks;
