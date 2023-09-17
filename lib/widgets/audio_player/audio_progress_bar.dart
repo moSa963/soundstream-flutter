@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/utils/duration_format.dart';

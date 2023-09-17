@@ -1,8 +1,11 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
+import 'package:soundstream_flutter/services/api_service.dart';
 
 class AudioQueueProvider extends Provider {
+  final api = const ApiService();
+
   List<Track> _queue;
   List<Track> get queue => _queue;
 
@@ -12,11 +15,11 @@ class AudioQueueProvider extends Provider {
   Duration? _position;
   Duration? get position => _position;
 
-  PlayerState _state = PlayerState.paused;
-  PlayerState get state => _state;
-
   final AudioPlayer _player;
   AudioPlayer get player => _player;
+
+  PlayerState _state = PlayerState(false, ProcessingState.idle);
+  PlayerState get state => _state;
 
   int? _index;
   int? get index => _index;
@@ -26,17 +29,17 @@ class AudioQueueProvider extends Provider {
   AudioQueueProvider()
       : _queue = [],
         _player = AudioPlayer() {
-    _player.onDurationChanged.listen((event) {
+    _player.durationStream.listen((event) {
       _duration = event;
       notifyListeners();
     });
 
-    _player.onPositionChanged.listen((event) {
+    _player.positionStream.listen((event) {
       _position = event;
       notifyListeners();
     });
 
-    _player.onPlayerStateChanged.listen((event) {
+    _player.playerStateStream.listen((event) {
       _state = event;
       notifyListeners();
     });
@@ -62,13 +65,12 @@ class AudioQueueProvider extends Provider {
   }
 
   Future<void> _handleIndexChanged() async {
-    await _player.release();
-
+    await _player.stop();
+    
     if (index == null) return;
 
-    await _player.play(
-      UrlSource(_queue[index!].uri.toString()),
-    );
+    await api.setAudioPlayerUrl(_player, _queue[index!].uri.toString());
+    await _player.play();
   }
 
   Future<void> add(Track track) async {

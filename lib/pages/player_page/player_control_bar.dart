@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/audio_player/audio_play_button.dart';
@@ -43,7 +43,7 @@ class PlayerControlBar extends StatelessWidget {
   }
 
   void _onBackwardTap(BuildContext context) async {
-    final pos = (await audio?.getCurrentPosition())?.inSeconds ?? 0;
+    final pos = audio?.position.inSeconds ?? 0;
 
     if (context.mounted) {
       pos > 10 ? _reset(context) : _backward(context);

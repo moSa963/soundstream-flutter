@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
@@ -12,7 +11,7 @@ class AudioPlayButton extends StatelessWidget {
     return IconButton(
         onPressed: () => onPressed(context),
         icon: Icon(
-          context.watch<AudioQueueProvider>().state == PlayerState.playing
+          context.watch<AudioQueueProvider>().state.playing
               ? Icons.pause
               : Icons.play_arrow,
           size: size,
@@ -21,7 +20,7 @@ class AudioPlayButton extends StatelessWidget {
   }
 
   void onPressed(BuildContext context) {
-    final player = context.read<AudioQueueProvider>().player;
-    player.state == PlayerState.playing ? player.pause() : player.resume();
+    final prov = context.read<AudioQueueProvider>();
+    prov.state.playing ? prov.player.pause() : prov.player.play();
   }
 }
