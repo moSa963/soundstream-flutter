@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:soundstream_flutter/models/playlist.dart';
+import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/pages/page_layout.dart';
+import 'package:soundstream_flutter/pages/user_page/user_page_header.dart';
+import 'package:soundstream_flutter/services/likes_service.dart';
+import 'package:soundstream_flutter/services/playlist_service.dart';
 import 'package:soundstream_flutter/services/user_service.dart';
-import 'package:soundstream_flutter/widgets/button/navigator_back_button.dart';
-import 'package:soundstream_flutter/widgets/fade_shader_mask.dart';
+import 'package:soundstream_flutter/widgets/horizontal_list.dart';
+import 'package:soundstream_flutter/widgets/list_item/playlist_item.dart';
+import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
 class ShowUserPage extends StatefulWidget {
   const ShowUserPage({super.key, required this.username});
   final String username;
-  final _service = const UserService();
 
   @override
   State<ShowUserPage> createState() => _ShowUserPageState();
 }
 
 class _ShowUserPageState extends State<ShowUserPage> {
+  final _likesService = const LikesService();
+  final _playlistService = const PlaylistService();
+  final _userService = const UserService();
+
   User? _user;
+  List<Track> _likedTracks = [];
+  List<Playlist> _playlists = [];
+  List<Playlist> _albums = [];
 
   @override
   void initState() {
     super.initState();
-    _loadUser();
+    _loadData();
   }
 
   @override
@@ -28,47 +40,62 @@ class _ShowUserPageState extends State<ShowUserPage> {
     return PageLayout(
       body: ListView(
         children: [
-          SizedBox(
-            height: 250,
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: FadeShaderMask(
-                    child: Hero(
-                        tag: "user ${widget.username}",
-                        child: Image.network(
-                            User.getImgUri(widget.username).toString(),
-                            fit: BoxFit.cover,
-                            alignment: Alignment.topCenter)),
-                  ),
-                ),
-                Positioned.fill(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const NavigatorBackButton(),
-                      const Spacer(),
-                      Text(_user?.username ?? "",
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
-                          textScaleFactor: 2,
-                          overflow: TextOverflow.ellipsis),
-                      const Spacer(),
-                    ],
-                  ),
+          UserPageHeader(user: _user ?? User(username: widget.username)),
+          HorizontalList(
+            title: "You liked",
+            children: [
+              for (var track in _likedTracks)
+                TrackItem(
+                  track: track,
+                  direction: Axis.horizontal,
                 )
-              ],
-            ),
-          )
+            ],
+          ),
+          HorizontalList(
+            title: "Playlists",
+            padding: const EdgeInsets.only(top: 25),
+            children: [
+              for (var track in _playlists)
+                PlaylistItem(
+                  playlist: track,
+                  direction: Axis.horizontal,
+                )
+            ],
+          ),
+          HorizontalList(
+            title: "Albums",
+            padding: const EdgeInsets.only(top: 25),
+            children: [
+              for (var track in _albums)
+                PlaylistItem(
+                  playlist: track,
+                  direction: Axis.horizontal,
+                )
+            ],
+          ),
         ],
       ),
     );
   }
 
-  void _loadUser() async {
-    final user = await widget._service.user(widget.username);
+  void _loadData() async {
+    final user = await _userService.user(widget.username);
     setState(() {
       _user = user;
+    });
+
+    var likedTracks = await _likesService.likedTracks(user: user, count: 6);
+
+    setState(() {
+      _likedTracks = likedTracks;
+    });
+
+    var playlists = await _playlistService.list(user: user);
+
+    setState(() {
+      _playlists =
+          playlists.where((element) => !(element.album ?? true)).toList();
+      _albums = playlists.where((element) => element.album ?? false).toList();
     });
   }
 }
