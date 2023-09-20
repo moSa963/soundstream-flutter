@@ -11,8 +11,9 @@ class Playlist {
   bool? liked;
   int? tracksCount;
   bool? private;
+  String? image;
 
-  Uri get imgUri => ApiService.uri("playlists/$id/photo");
+  Uri get imgUri => ApiService.uri("playlists/$id/photo/$image");
 
   Playlist({
     this.id = -1,
@@ -20,6 +21,7 @@ class Playlist {
     this.description,
     this.album,
     this.liked,
+    this.image,
     this.private,
     this.tracksCount,
     this.user,
@@ -42,6 +44,7 @@ class Playlist {
       description: json['description'] as String,
       album: json['album'] as bool,
       liked: json['liked'] as bool,
+      image: json['image'] as String?,
       private: json['private'] as bool,
       tracksCount: json['tracks_count'] as int? ?? 0,
       user: User.fromJson(json['user']),
