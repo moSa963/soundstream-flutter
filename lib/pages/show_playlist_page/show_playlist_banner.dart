@@ -1,29 +1,48 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
+import 'package:soundstream_flutter/providers/playlists_provider.dart';
+import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
 import 'package:soundstream_flutter/widgets/button/upload_button.dart';
 import 'package:soundstream_flutter/widgets/page_banner.dart';
 import 'package:soundstream_flutter/widgets/bottom_sheet/update_playlist_sheet.dart';
 import 'package:soundstream_flutter/widgets/user_chip.dart';
 
-class ShowPlaylistBanner extends StatelessWidget {
+class ShowPlaylistBanner extends StatefulWidget {
   const ShowPlaylistBanner(
       {super.key, required this.playlist, this.onTrackAdded});
   final Playlist playlist;
   final void Function(Track track)? onTrackAdded;
 
   @override
+  State<ShowPlaylistBanner> createState() => _ShowPlaylistBannerState();
+}
+
+class _ShowPlaylistBannerState extends State<ShowPlaylistBanner> {
+  @override
   Widget build(BuildContext context) {
+    final playlist = context
+        .watch<PlaylistsProvider>()
+        .playlists
+        .where(
+          (element) => element.id == widget.playlist.id,
+        )
+        .first;
+
     return PageBanner(
       title: playlist.title ?? "",
       subtitle: playlist.description ?? "",
-      image: Hero(
-        tag: "playlist ${playlist.id}",
-        child: Image.network(
-          playlist.imgUri.toString(),
-          fit: BoxFit.cover,
+      image: ScaleGestureDetector(
+        onTap: () => _onUpdateImage(playlist),
+        child: Hero(
+          tag: "playlist ${playlist.id}",
+          child: Image.network(
+            playlist.imgUri.toString(),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
       leading: [
@@ -33,13 +52,14 @@ class ShowPlaylistBanner extends StatelessWidget {
         ),
         const Spacer(),
         IconButton(
-            onPressed: () => _onUpdate(context), icon: const Icon(Icons.edit)),
+            onPressed: () => _onUpdate(context, playlist),
+            icon: const Icon(Icons.edit)),
       ],
-      actions: _actions(context),
+      actions: _actions(context, playlist),
     );
   }
 
-  List<Widget> _actions(BuildContext context) {
+  List<Widget> _actions(BuildContext context, Playlist playlist) {
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -57,16 +77,27 @@ class ShowPlaylistBanner extends StatelessWidget {
           context.watch<AuthProvider>().ownedPlaylist(playlist))
         UploadButton(
           album: playlist,
-          onDone: onTrackAdded,
+          onDone: widget.onTrackAdded,
         )
     ];
   }
 
-  void _onUpdate(BuildContext context) {
+  void _onUpdate(BuildContext context, Playlist playlist) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
           return UpdatePlaylistSheet(playlist: playlist);
         });
+  }
+
+  void _onUpdateImage(Playlist playlist) async {
+    FilePickerResult? res =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (res == null) return;
+
+    if (context.mounted) {
+      context.read<PlaylistsProvider>().updateImage(playlist, res.files[0]);
+    }
   }
 }
