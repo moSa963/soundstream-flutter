@@ -5,7 +5,6 @@ import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/pages/show_playlist_page/show_playlist_banner.dart';
 import 'package:soundstream_flutter/providers/upload_provider.dart';
-import 'package:soundstream_flutter/services/playlist_service.dart';
 import 'package:soundstream_flutter/services/track_service.dart';
 import 'package:soundstream_flutter/widgets/list_item/uploading_item.dart';
 import 'package:soundstream_flutter/widgets/tracks_list.dart';
@@ -14,7 +13,6 @@ class ShowPlaylistPage extends StatefulWidget {
   const ShowPlaylistPage({super.key, required this.playlist});
 
   final Playlist playlist;
-  final _service = const PlaylistService();
   final _trackService = const TrackService();
 
   @override
@@ -23,7 +21,6 @@ class ShowPlaylistPage extends StatefulWidget {
 
 class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
   List<Track>? _tracks;
-  Playlist? _playlist;
 
   @override
   void initState() {
@@ -35,29 +32,30 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
   Widget build(BuildContext context) {
     final uploadingTracks =
         context.watch<UploadProvider>().tracksInProgress(widget.playlist);
-    
+
     return PageLayout(
       body: ListView(
         children: [
           ShowPlaylistBanner(
-            playlist: _playlist ?? widget.playlist,
+            playlist: widget.playlist,
             onTrackAdded: _handleTrackAdded,
           ),
-          ...?uploadingTracks?.map<UploadingItem>((e) => UploadingItem(title: e.title,)).toList(),
-          TracksList(tracks: _tracks ?? [], updateTrack: _updateTrack, playlist: _playlist),
+          ...?uploadingTracks
+              ?.map<UploadingItem>((e) => UploadingItem(
+                    title: e.title,
+                  ))
+              .toList(),
+          TracksList(
+              tracks: _tracks ?? [],
+              updateTrack: _updateTrack,
+              playlist: widget.playlist),
         ],
       ),
     );
   }
 
   void loadData() async {
-    Playlist p = await widget._service.get(widget.playlist.id);
-
-    setState(() {
-      _playlist = p;
-    });
-
-    var tracks = await widget._trackService.list(p);
+    var tracks = await widget._trackService.list(widget.playlist);
 
     setState(() {
       _tracks = tracks;
