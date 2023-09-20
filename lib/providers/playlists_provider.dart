@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
 import 'package:soundstream_flutter/services/playlist_service.dart';
@@ -20,7 +21,7 @@ class PlaylistsProvider extends Provider {
     });
   }
 
-  Future<void> createPlaylist(Playlist playlist, {bool album=false}) async {
+  Future<void> createPlaylist(Playlist playlist, {bool album = false}) async {
     assert(playlist.id == -1);
 
     await withLoading(() async {
@@ -62,6 +63,20 @@ class PlaylistsProvider extends Provider {
 
       int index = _playlists.indexWhere(
         (element) => element.id == playlist.id,
+      );
+
+      if (index == -1) return;
+
+      _playlists[index] = res;
+    });
+  }
+
+  Future<void> updateImage(Playlist playlist, PlatformFile img) async {
+    await withLoading(() async {
+      final res = await service.updateImage(playlist, img);
+
+      int index = _playlists.indexWhere(
+        (element) => element.id == res.id,
       );
 
       if (index == -1) return;
