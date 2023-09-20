@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
@@ -26,5 +27,14 @@ class TrackService {
 
   Future<void> addToPlaylist(Playlist playlist, Track track) async {
     await api.post("playlists/${playlist.id}/tracks/${track.id}", {});
+  }
+
+  Future<Track> updateImage(Track track, PlatformFile image) async {
+    final js =
+        await api.multipartRequest("POST", "tracks/${track.id}/photo", files: {
+      "photo": image,
+    });
+
+    return Track.fromJson(js["data"]);
   }
 }
