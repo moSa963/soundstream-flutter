@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/pages/profile_page/profile_page.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/services/history_service.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
@@ -37,7 +38,8 @@ class _HomePageState extends State<HomePage> {
           title: const Text("Sound Stream"),
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.history)),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
+            IconButton(
+                onPressed: () => _openPage(context, const ProfilePage()), icon: const Icon(Icons.settings))
           ],
         ),
         body: ListView(clipBehavior: Clip.none, children: [
@@ -88,5 +90,13 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _historyTracks = historyTracks;
     });
+  }
+
+  void _openPage(BuildContext context, Widget page) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return page;
+      },
+    ));
   }
 }
