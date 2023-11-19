@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Lyrics {
   List<String> lyrics;
-  List<String> timestamps;
+  List<double> timestamps;
 
   Lyrics({
     this.lyrics = const [],
@@ -10,9 +10,13 @@ class Lyrics {
   });
 
   factory Lyrics.fromJson(Map<String, dynamic> json) {
+    final stamps = json['timestamps'] as String;
+
     return Lyrics(
       lyrics: LineSplitter.split((json['lyrics'] as String)).toList(),
-      timestamps: (json['timestamps'] as String).split(","),
+      timestamps: stamps.isNotEmpty
+          ? stamps.split(",").map((e) => double.parse(e)).toList()
+          : [],
     );
   }
 }
