@@ -1,4 +1,5 @@
 import 'package:file_picker/file_picker.dart';
+import 'package:soundstream_flutter/models/lyrics.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
@@ -36,5 +37,14 @@ class TrackService {
     });
 
     return Track.fromJson(js["data"]);
+  }
+
+  Future<Lyrics> lyrics(Track track) async {
+    try {
+      final js = await api.get("lyrics/tracks/${track.id}");
+      return Lyrics.fromJson(js["data"]);
+    } catch (_) {
+      return Lyrics();
+    }
   }
 }
