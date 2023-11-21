@@ -63,7 +63,7 @@ class _OverflowAnimatedTextState extends State<OverflowAnimatedText> {
                   children: [
                     Text(
                       widget.data,
-                      textScaleFactor: widget.textScaleFactor,
+                      textScaler: widget.textScaleFactor == null ? null : TextScaler.linear(widget.textScaleFactor!),
                       style: widget.style,
                     ),
                     const SizedBox(

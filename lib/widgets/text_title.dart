@@ -13,7 +13,7 @@ class TextTitle extends StatelessWidget {
         style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
             fontWeight: FontWeight.bold),
-        textScaleFactor: 1.8,
+        textScaler: const TextScaler.linear(1.8),
       ),
     );
   }

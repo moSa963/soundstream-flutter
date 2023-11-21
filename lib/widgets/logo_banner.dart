@@ -31,7 +31,7 @@ class LogoBanner extends StatelessWidget {
           if (title != null)
             Text(
               title ?? "",
-              textScaleFactor: 2,
+              textScaler: const TextScaler.linear(2),
             ),
         ],
     );

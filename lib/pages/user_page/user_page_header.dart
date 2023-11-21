@@ -30,7 +30,7 @@ class UserPageHeader extends StatelessWidget {
                 Text(user.name,
                     style:
                         TextStyle(color: Theme.of(context).colorScheme.primary),
-                    textScaleFactor: 2,
+                    textScaler: const TextScaler.linear(2),
                     overflow: TextOverflow.ellipsis),
                   Text("@${user.username}"),
                 const Spacer(),
