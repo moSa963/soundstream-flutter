@@ -39,12 +39,12 @@ class TrackService {
     return Track.fromJson(js["data"]);
   }
 
-  Future<Lyrics> lyrics(Track track) async {
+  Future<Lyrics?> lyrics(Track track) async {
     try {
       final js = await api.get("lyrics/tracks/${track.id}");
       return Lyrics.fromJson(js["data"]);
     } catch (_) {
-      return Lyrics();
+      return null;
     }
   }
 }
