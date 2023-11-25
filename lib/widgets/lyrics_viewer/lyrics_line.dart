@@ -14,7 +14,9 @@ class LyricsLine extends StatelessWidget {
       onTap: onTap,
         child: Text(
       line,
+      textAlign: TextAlign.center,
       style: TextStyle(
+        
           color: !selected ? Theme.of(context).primaryColor : null,
           fontWeight: FontWeight.bold),
       textScaler: const TextScaler.linear(1.3),
