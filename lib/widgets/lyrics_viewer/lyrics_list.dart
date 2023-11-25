@@ -3,9 +3,14 @@ import 'package:soundstream_flutter/models/lyrics.dart';
 import 'package:soundstream_flutter/widgets/lyrics_viewer/lyrics_line.dart';
 
 class LyricsList extends StatefulWidget {
-  const LyricsList({super.key, required this.lyrics, required this.position});
+  const LyricsList(
+      {super.key,
+      required this.lyrics,
+      required this.position,
+      this.setPosition});
   final Lyrics lyrics;
   final Duration position;
+  final void Function(double? newPosition)? setPosition;
 
   @override
   State<LyricsList> createState() => _LyricsListState();
@@ -61,13 +66,13 @@ class _LyricsListState extends State<LyricsList> {
         continue;
       }
 
-      ++counter;
+      var pos = widget.lyrics.timestamps.elementAtOrNull(++counter - 1);
 
       res.add(LyricsLine(
-        key: selected == counter ? _key : null,
-        line: line,
-        selected: selected == counter,
-      ));
+          key: selected == counter ? _key : null,
+          line: line,
+          selected: selected == counter,
+          onTap: () => widget.setPosition?.call(pos)));
     }
 
     return res;
@@ -75,8 +80,7 @@ class _LyricsListState extends State<LyricsList> {
 
   int _getIndex() {
     for (int i = 0; i < widget.lyrics.timestamps.length; ++i) {
-      if (widget.position.inMilliseconds / 1000 <=
-          widget.lyrics.timestamps[i]) {
+      if (widget.position.inMilliseconds / 1000 < widget.lyrics.timestamps[i]) {
         return i;
       }
     }

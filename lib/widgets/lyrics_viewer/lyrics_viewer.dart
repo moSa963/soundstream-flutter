@@ -5,8 +5,10 @@ import 'package:soundstream_flutter/services/track_service.dart';
 import 'package:soundstream_flutter/widgets/lyrics_viewer/lyrics_list.dart';
 
 class LyricsViewer extends StatefulWidget {
-  const LyricsViewer({super.key, this.track, this.position = Duration.zero});
+  const LyricsViewer(
+      {super.key, this.track, this.setPosition, this.position = Duration.zero});
   final Track? track;
+  final void Function(int pos)? setPosition;
   final Duration position;
   final service = const TrackService();
 
@@ -34,7 +36,6 @@ class _LyricsViewerState extends State<LyricsViewer> {
 
       loadLyrics();
     }
-
   }
 
   @override
@@ -43,12 +44,21 @@ class _LyricsViewerState extends State<LyricsViewer> {
       constraints: const BoxConstraints(maxHeight: 300),
       clipBehavior: Clip.antiAlias,
       padding: const EdgeInsets.all(5),
+      margin: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary.withAlpha(50),
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(25), topRight: Radius.circular(25))),
-      child: LyricsList(lyrics: lyrics ?? Lyrics(), position: widget.position),
+      child: LyricsList(
+          lyrics: lyrics ?? Lyrics(),
+          position: widget.position,
+          setPosition: setPosition),
     );
+  }
+
+  void setPosition(double? newPos) {
+    if (newPos == null) return;
+    widget.setPosition?.call((newPos * 1000).toInt());
   }
 
   void loadLyrics() async {

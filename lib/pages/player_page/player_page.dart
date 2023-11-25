@@ -22,7 +22,7 @@ class PlayerPage extends StatelessWidget {
           LyricsViewer(
               track: context.watch<AudioQueueProvider>().track,
               position: context.watch<AudioQueueProvider>().position ??
-                  Duration.zero),
+                  Duration.zero, setPosition: (int pos) => context.read<AudioQueueProvider>().seek(Duration(milliseconds: pos))),
           TracksList(
             tracks: context.watch<AudioQueueProvider>().queue,
             updateTrack: (track) => _updateTrack(context, track),
