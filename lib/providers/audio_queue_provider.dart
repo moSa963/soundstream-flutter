@@ -66,7 +66,7 @@ class AudioQueueProvider extends Provider {
 
   Future<void> _handleIndexChanged() async {
     await _player.stop();
-    
+
     if (index == null) return;
 
     await api.setAudioPlayerUrl(_player, _queue[index!].uri.toString());
@@ -103,6 +103,12 @@ class AudioQueueProvider extends Provider {
 
   Future<void> forward() async {
     await setIndex((_index ?? 0) + 1);
+    notifyListeners();
+  }
+
+  Future<void> seek(Duration pos) async {
+    player.seek(pos);
+    _position = player.position;
     notifyListeners();
   }
 
