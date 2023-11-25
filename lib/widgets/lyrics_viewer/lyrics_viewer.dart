@@ -67,7 +67,7 @@ class _LyricsViewerState extends State<LyricsViewer> {
     final data = await widget.service.lyrics(widget.track!);
 
     setState(() {
-      lyrics = data;
+      lyrics = data ?? Lyrics(lyrics: ["No Lyrics"]);
     });
   }
 }
