@@ -15,9 +15,10 @@ class UserPageHeader extends StatelessWidget {
         children: [
           Positioned.fill(
             child: FadeShaderMask(
+              begin: Alignment.center,
               child: Hero(
                   tag: "user ${user.username}",
-                  child: Image.network(User.getImgUri(user.username).toString(),
+                  child: Image.network(user.imgUri.toString(),
                       fit: BoxFit.cover, alignment: Alignment.topCenter)),
             ),
           ),

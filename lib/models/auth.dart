@@ -13,6 +13,7 @@ class Auth extends User{
     super.username = "",
     this.email = "",
     this.emailVerifiedAt,
+    super.image,
     super.createdAt,
   });
 
@@ -23,6 +24,7 @@ class Auth extends User{
       username: json['username'] as String,
       email: json['email'] as String,
       emailVerifiedAt: json['email_verified_at'] != null ? DateTime.parse(json['email_verified_at'] as String) : null,
+      image: json['photo'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
