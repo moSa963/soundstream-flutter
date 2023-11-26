@@ -1,6 +1,8 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:soundstream_flutter/models/auth.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
 import 'package:soundstream_flutter/services/auth_service.dart';
 
@@ -46,6 +48,13 @@ class AuthProvider extends Provider {
       await service.logout();
       auth = null;
     });
+  }
+
+  Future<void> updateProfileImage(PlatformFile image) async {
+    if (auth == null) return;
+    User user = await service.image(auth!, image);
+    auth?.image = user.image;
+    notifyListeners();
   }
 
   bool ownedPlaylist(Playlist playlist) {
