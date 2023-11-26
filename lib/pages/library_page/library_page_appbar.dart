@@ -27,7 +27,6 @@ class LibraryPageAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void openPage(BuildContext context, Widget page) {
-    Navigator.pop(context);
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
         return page;
