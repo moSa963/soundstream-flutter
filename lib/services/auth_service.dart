@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:soundstream_flutter/models/auth.dart';
+import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
 
 class AuthService {
@@ -36,7 +38,7 @@ class AuthService {
       "username": username,
       "password": password,
     });
-    
+
     await _api.setToken(js["data"]["token"]);
 
     return Auth.fromJson(js["data"]["user"]);
@@ -44,5 +46,14 @@ class AuthService {
 
   Future<void> logout() async {
     await _api.post("logout", {});
+  }
+
+  Future<User> image(User user, PlatformFile image) async {
+    var js =
+        await _api.multipartRequest("POST", "account/profile/photo", files: {
+      "photo": image,
+    });
+    
+    return User.fromJson(js["data"]);
   }
 }
