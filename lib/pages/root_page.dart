@@ -12,7 +12,13 @@ class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Soundstream',
-      theme: ThemeData(useMaterial3: true),
+      theme: ThemeData(useMaterial3: true, 
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 89, 39, 176),
+          background: const Color.fromRGBO(250, 250, 250, 1),
+          surface: const Color.fromRGBO(250, 250, 250, 1),
+        )
+      ),
       darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: context.watch<ThemeProvider>().themeMode,
       home: Consumer<AuthProvider>(
