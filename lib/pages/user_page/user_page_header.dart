@@ -28,12 +28,27 @@ class UserPageHeader extends StatelessWidget {
               children: [
                 const NavigatorBackButton(),
                 const Spacer(),
-                Text(user.name,
-                    style:
-                        TextStyle(color: Theme.of(context).colorScheme.primary),
-                    textScaler: const TextScaler.linear(2),
-                    overflow: TextOverflow.ellipsis),
-                  Text("@${user.username}"),
+                Container(
+                  padding: const EdgeInsets.all(2),
+                  margin: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.background.withAlpha(200),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(user.name,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold),
+                          textScaler: const TextScaler.linear(2),
+                          overflow: TextOverflow.ellipsis),
+                      Text("@${user.username}"),
+                    ],
+                  ),
+                ),
                 const Spacer(),
               ],
             ),
