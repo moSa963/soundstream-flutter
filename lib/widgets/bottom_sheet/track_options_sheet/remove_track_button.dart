@@ -6,10 +6,11 @@ import 'package:soundstream_flutter/widgets/dialog/confirmation_dialog.dart';
 
 class RemoveTrackButton extends StatelessWidget {
   const RemoveTrackButton(
-      {super.key, required this.service, required this.track, required this.playlist});
+      {super.key, required this.service, required this.track, required this.playlist, this.onRemoved});
   final TrackService service;
   final Track track;
   final Playlist playlist;
+  final void Function(Track track)? onRemoved;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class RemoveTrackButton extends StatelessWidget {
               } else {
                 service.removeFromPlaylist(playlist, track);
               }
+              onRemoved?.call(track);
               Navigator.pop(context);
               Navigator.pop(context);
             },

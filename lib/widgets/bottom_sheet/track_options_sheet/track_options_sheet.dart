@@ -23,7 +23,11 @@ class TrackOptionsSheet extends StatelessWidget {
             child: const Text("Add to playlist")),
         if (playlist != null &&
             context.watch<AuthProvider>().ownedPlaylist(playlist!))
-          RemoveTrackButton(service: _service, track: track, playlist: playlist!,)
+          RemoveTrackButton(
+              service: _service,
+              track: track,
+              playlist: playlist!,
+              onRemoved: _handleRemoved)
       ],
     );
   }
@@ -45,4 +49,6 @@ class TrackOptionsSheet extends StatelessWidget {
           ),
         ));
   }
+
+  void _handleRemoved(Track track) {}
 }
