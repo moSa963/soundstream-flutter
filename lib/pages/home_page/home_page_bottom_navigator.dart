@@ -14,11 +14,12 @@ class HomePageBottomNavigator extends StatelessWidget {
         gradient: LinearGradient(
             colors: [
               Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.surface.withAlpha(0)
+              Theme.of(context).colorScheme.surface.withAlpha(150),
+              Theme.of(context).colorScheme.surface.withAlpha(0),
             ],
             begin: AlignmentDirectional.bottomCenter,
             end: Alignment.topCenter,
-            stops: const [0.3, 1]),
+            stops: const [0, 0.7, 1]),
       ),
       child: BottomNavigationBar(
         currentIndex: index,
