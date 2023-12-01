@@ -35,6 +35,7 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
 
     return PageLayout(
       body: ListView(
+        clipBehavior: Clip.none,
         children: [
           ShowPlaylistBanner(
             playlist: widget.playlist,
