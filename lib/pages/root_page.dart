@@ -14,7 +14,7 @@ class RootPage extends StatelessWidget {
       title: 'Soundstream',
       theme: ThemeData(useMaterial3: true, 
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 89, 39, 176),
+          seedColor: const Color.fromARGB(255, 13, 0, 36),
           background: const Color.fromRGBO(250, 250, 250, 1),
           surface: const Color.fromRGBO(250, 250, 250, 1),
         )
