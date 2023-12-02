@@ -21,11 +21,15 @@ class PlayerPage extends StatelessWidget {
           ),
           LyricsViewer(
               track: context.watch<AudioQueueProvider>().track,
-              position: context.watch<AudioQueueProvider>().position ??
-                  Duration.zero, setPosition: (int pos) => context.read<AudioQueueProvider>().seek(Duration(milliseconds: pos))),
+              position:
+                  context.watch<AudioQueueProvider>().position ?? Duration.zero,
+              setPosition: (int pos) => context
+                  .read<AudioQueueProvider>()
+                  .seek(Duration(milliseconds: pos))),
           TracksList(
             tracks: context.watch<AudioQueueProvider>().queue,
             updateTrack: (track) => _updateTrack(context, track),
+            onTrackDeleted: (v) => _handleTrackDeleted(context, v),
             onTap: (track) => _playTrack(context, track),
           )
         ],
@@ -39,5 +43,9 @@ class PlayerPage extends StatelessWidget {
 
   void _updateTrack(BuildContext context, Track track) {
     context.read<AudioQueueProvider>().updateTrack(track);
+  }
+
+  void _handleTrackDeleted(BuildContext context, Track track) {
+    context.read<AudioQueueProvider>().remove(track);
   }
 }

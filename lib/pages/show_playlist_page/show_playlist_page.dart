@@ -49,6 +49,7 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
           TracksList(
               tracks: _tracks ?? [],
               updateTrack: _updateTrack,
+              onTrackDeleted: _handleTrackDeleted,
               playlist: widget.playlist),
         ],
       ),
@@ -67,6 +68,12 @@ class _ShowPlaylistPageState extends State<ShowPlaylistPage> {
     setState(() {
       _tracks?[_tracks?.indexWhere((element) => element.id == track.id) ?? -1] =
           track;
+    });
+  }
+
+  void _handleTrackDeleted(Track track) {
+    setState(() {
+      _tracks?.removeWhere((element) => element.id == track.id);
     });
   }
 
