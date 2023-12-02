@@ -10,6 +10,7 @@ class TracksList extends StatelessWidget {
   const TracksList(
       {super.key,
       required this.tracks,
+      this.onTrackDeleted,
       this.updateTrack,
       this.onTap,
       this.playlist});
@@ -17,6 +18,7 @@ class TracksList extends StatelessWidget {
   final Playlist? playlist;
   final void Function(Track)? updateTrack;
   final void Function(Track)? onTap;
+  final void Function(Track)? onTrackDeleted;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,12 @@ class TracksList extends StatelessWidget {
           return TrackOptionsSheet(
             track: track,
             playlist: playlist,
+            onTrackRemoved: _handleTrackRemoved,
           );
         });
+  }
+
+  void _handleTrackRemoved(Track track) {
+    onTrackDeleted?.call(track);
   }
 }

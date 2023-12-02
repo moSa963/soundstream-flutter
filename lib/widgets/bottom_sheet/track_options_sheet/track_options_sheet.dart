@@ -9,10 +9,11 @@ import 'package:soundstream_flutter/widgets/bottom_sheet/track_options_sheet/rem
 import 'package:soundstream_flutter/widgets/dialog/playlists_picker_dialog.dart';
 
 class TrackOptionsSheet extends StatelessWidget {
-  const TrackOptionsSheet({super.key, required this.track, this.playlist});
+  const TrackOptionsSheet({super.key, required this.track, this.playlist, this.onTrackRemoved});
   final Track track;
   final Playlist? playlist;
   final _service = const TrackService();
+  final void Function(Track track)? onTrackRemoved;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class TrackOptionsSheet extends StatelessWidget {
               service: _service,
               track: track,
               playlist: playlist!,
-              onRemoved: _handleRemoved)
+              onRemoved: onTrackRemoved)
       ],
     );
   }
@@ -49,6 +50,4 @@ class TrackOptionsSheet extends StatelessWidget {
           ),
         ));
   }
-
-  void _handleRemoved(Track track) {}
 }
