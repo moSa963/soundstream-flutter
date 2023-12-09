@@ -5,6 +5,7 @@ import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
+import 'package:soundstream_flutter/widgets/analyzed_image.dart';
 import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
 import 'package:soundstream_flutter/widgets/button/upload_button.dart';
 import 'package:soundstream_flutter/widgets/page_banner.dart';
@@ -22,6 +23,8 @@ class ShowPlaylistBanner extends StatefulWidget {
 }
 
 class _ShowPlaylistBannerState extends State<ShowPlaylistBanner> {
+  Color? _color;
+
   @override
   Widget build(BuildContext context) {
     final playlist = context
@@ -35,13 +38,15 @@ class _ShowPlaylistBannerState extends State<ShowPlaylistBanner> {
     return PageBanner(
       title: playlist.title ?? "",
       subtitle: playlist.description ?? "",
+      color: _color,
       image: ScaleGestureDetector(
         onTap: () => _onUpdateImage(playlist),
         child: Hero(
           tag: "playlist ${playlist.id}",
-          child: Image.network(
-            playlist.imgUri.toString(),
+          child: AnalyzedImage(
+            src: playlist.imgUri.toString(),
             fit: BoxFit.cover,
+            onColor: (value) => setState(() => _color = value),
           ),
         ),
       ),
