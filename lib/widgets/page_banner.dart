@@ -8,6 +8,7 @@ class PageBanner extends StatelessWidget {
   final List<Widget>? leading;
   final String title;
   final String subtitle;
+  final Color? color;
 
   const PageBanner({
     super.key,
@@ -16,6 +17,7 @@ class PageBanner extends StatelessWidget {
     this.image,
     this.subtitle = "",
     this.title = "",
+    this.color,
   });
 
   @override
@@ -25,7 +27,7 @@ class PageBanner extends StatelessWidget {
       decoration: BoxDecoration(
         gradient:
             RadialGradient(radius: 0.9, focal: Alignment.topCenter, colors: [
-          Theme.of(context).colorScheme.primary.withAlpha(120),
+          color ?? Theme.of(context).colorScheme.primary.withAlpha(120),
           Colors.transparent,
         ]),
       ),
