@@ -26,9 +26,11 @@ class PageBanner extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         gradient:
-            RadialGradient(radius: 0.9, focal: Alignment.topCenter, colors: [
-          color ?? Theme.of(context).colorScheme.primary.withAlpha(120),
-          Colors.transparent,
+            RadialGradient(radius: 0.7, focal: Alignment.topCenter, colors: [
+          color?.withAlpha(150) ??
+              Theme.of(context).colorScheme.primary.withAlpha(150),
+          color?.withAlpha(0) ??
+              Theme.of(context).colorScheme.primary.withAlpha(0),
         ]),
       ),
       padding: const EdgeInsets.all(10),
