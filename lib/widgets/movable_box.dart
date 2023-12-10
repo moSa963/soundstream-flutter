@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class MovableBox extends StatefulWidget {
-  const MovableBox({super.key, required this.child});
+  const MovableBox({super.key, required this.child, this.onPanEnd});
   final Widget child;
+  final void Function(DragEndDetails)? onPanEnd;
 
   @override
   State<MovableBox> createState() => _MovableBoxState();
@@ -23,15 +24,17 @@ class _MovableBoxState extends State<MovableBox> {
     );
   }
 
-  void _handlePanUpdate(DragUpdateDetails data) {
+  void _handlePanUpdate(DragUpdateDetails event) {
     setState(() {
-      _offset += data.delta;
+      _offset += event.delta;
     });
   }
 
-  void _handlePanEnd(DragEndDetails data) {
+  void _handlePanEnd(DragEndDetails event) {
     setState(() {
       _offset = Offset.zero;
     });
+
+    widget.onPanEnd?.call(event);
   }
 }
