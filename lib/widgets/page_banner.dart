@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soundstream_flutter/widgets/button/navigator_back_button.dart';
+import 'package:soundstream_flutter/widgets/movable_box.dart';
 import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
 
 class PageBanner extends StatelessWidget {
@@ -41,13 +42,14 @@ class PageBanner extends StatelessWidget {
           if (leading != null) Row(children: leading ?? []),
           const SizedBox(height: kToolbarHeight / 2),
           Center(
+              child: MovableBox(
             child: Container(
               decoration:
                   const BoxDecoration(boxShadow: [BoxShadow(blurRadius: 25)]),
               constraints: const BoxConstraints(maxWidth: 150),
               child: AspectRatio(aspectRatio: 1, child: image),
             ),
-          ),
+          )),
           const SizedBox(height: 10),
           OverflowAnimatedText(title,
               textScaleFactor: 2,
