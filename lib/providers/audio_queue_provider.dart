@@ -54,12 +54,7 @@ class AudioQueueProvider extends Provider {
   }
 
   Future<void> setIndex(int index) async {
-    if (_queue.isEmpty) {
-      _index = null;
-      return;
-    }
-
-    _index = index % _queue.length;
+    _index = _queue.isEmpty ? null : index % _queue.length;
 
     await _handleIndexChanged();
   }
