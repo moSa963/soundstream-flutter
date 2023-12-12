@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/pages/root_page.dart';
-import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
 import 'package:soundstream_flutter/providers/playlists_provider.dart';
 import 'package:soundstream_flutter/providers/theme_provider.dart';

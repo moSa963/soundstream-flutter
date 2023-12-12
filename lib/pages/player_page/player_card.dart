@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/pages/player_page/player_control_bar.dart';
-import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/audio_player/audio_progress_bar.dart';
 import 'package:soundstream_flutter/widgets/overflow_animated_text.dart';
 

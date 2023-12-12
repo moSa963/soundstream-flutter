@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/track.dart';
-import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
 import 'package:soundstream_flutter/widgets/button/like_button.dart';
 import 'package:soundstream_flutter/widgets/list_item/horizontal_list_item.dart';

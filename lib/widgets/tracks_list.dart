@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/track.dart';
-import 'package:soundstream_flutter/providers/audio_queue_provider.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/bottom_sheet/track_options_sheet/track_options_sheet.dart';
 import 'package:soundstream_flutter/widgets/list_item/track_item.dart';
 
