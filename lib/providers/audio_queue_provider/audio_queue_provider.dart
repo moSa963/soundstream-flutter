@@ -1,5 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/audio_provider_options.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
 
@@ -26,9 +27,13 @@ class AudioQueueProvider extends Provider {
 
   Track? get track => index == null ? null : _queue.elementAtOrNull(index!);
 
+  late AudioProviderOptions options;
+
   AudioQueueProvider()
       : _queue = [],
         _player = AudioPlayer() {
+    options = AudioProviderOptions(onChange: () => notifyListeners());
+
     _player.durationStream.listen((event) {
       _duration = event;
       notifyListeners();
