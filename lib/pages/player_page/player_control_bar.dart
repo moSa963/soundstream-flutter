@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:soundstream_flutter/pages/player_page/repeat_button.dart';
+import 'package:soundstream_flutter/pages/player_page/shuffle_button.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
 import 'package:soundstream_flutter/widgets/audio_player/audio_play_button.dart';
 import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
@@ -14,7 +16,7 @@ class PlayerControlBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        const ScaleGestureDetector(child: Icon(Icons.shuffle, size: 25)),
+        const ShuffleButton(),
         Row(
           children: [
             ScaleGestureDetector(
@@ -33,7 +35,7 @@ class PlayerControlBar extends StatelessWidget {
                 child: const Icon(Icons.keyboard_double_arrow_right, size: 35)),
           ],
         ),
-        const ScaleGestureDetector(child: Icon(Icons.repeat_on, size: 25)),
+        const RepeatButton(),
       ],
     );
   }
