@@ -1,14 +1,19 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider/audio_provider_options.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/tracks_queue.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
 
 class AudioQueueProvider extends Provider {
   final api = const ApiService();
 
-  List<Track> _queue;
-  List<Track> get queue => _queue;
+  late final TracksQueue _queue;
+  TracksQueue get queue => _queue;
+  SeekType get seekType => _queue.seekType;
+  set seekType(SeekType type) {
+    _queue.seekType = type;
+  }
 
   Duration? _duration;
   Duration? get duration => _duration;
@@ -16,23 +21,30 @@ class AudioQueueProvider extends Provider {
   Duration? _position;
   Duration? get position => _position;
 
-  final AudioPlayer _player;
+  final AudioPlayer _player = AudioPlayer();
   AudioPlayer get player => _player;
 
   PlayerState _state = PlayerState(false, ProcessingState.idle);
   PlayerState get state => _state;
 
-  int? _index;
-  int? get index => _index;
+  int? get index => _queue.index;
 
-  Track? get track => index == null ? null : _queue.elementAtOrNull(index!);
+  Track? _track;
+  Track? get track => _track;
 
   late AudioProviderOptions options;
 
-  AudioQueueProvider()
-      : _queue = [],
-        _player = AudioPlayer() {
+  AudioQueueProvider() {
     options = AudioProviderOptions(onChange: () => notifyListeners());
+
+    _queue = TracksQueue(onChange: () async {
+      if (_queue.getTrack()?.id != track?.id) {
+        _track = _queue.getTrack();
+        await _handleIndexChanged();
+      }
+
+      notifyListeners();
+    });
 
     _player.durationStream.listen((event) {
       _duration = event;
@@ -50,40 +62,13 @@ class AudioQueueProvider extends Provider {
     });
   }
 
-  Future<void> setList(List<Track> list, {int index = 0}) async {
-    _queue = list;
-
-    await setIndex(index);
-
-    notifyListeners();
-  }
-
-  Future<void> setIndex(int index) async {
-    _index = _queue.isEmpty ? null : index % _queue.length;
-
-    await _handleIndexChanged();
-  }
-
   Future<void> _handleIndexChanged() async {
     await _player.stop();
 
     if (index == null) return;
 
-    await api.setAudioPlayerUrl(_player, _queue[index!].uri.toString());
+    await api.setAudioPlayerUrl(_player, track!.uri.toString());
     await _player.play();
-  }
-
-  Future<void> add(Track track) async {
-    _queue.add(track);
-    notifyListeners();
-  }
-
-  Future<void> remove(Track track) async {
-    int index = _queue.indexOf(track);
-    if (index == -1) return;
-    _queue.removeAt(index);
-    if (_index == index) return;
-    await setIndex(_index ?? 0);
   }
 
   @override
@@ -92,37 +77,13 @@ class AudioQueueProvider extends Provider {
     _player.dispose();
   }
 
-  Future<void> backward() async {
-    await setIndex((_index ?? 0) - 1);
-    notifyListeners();
-  }
-
   Future<void> reset() async {
     await _player.seek(Duration.zero);
-  }
-
-  Future<void> forward() async {
-    await setIndex((_index ?? 0) + 1);
-    notifyListeners();
   }
 
   Future<void> seek(Duration pos) async {
     player.seek(pos);
     _position = player.position;
-    notifyListeners();
-  }
-
-  Future<void> seekTrack(Track track) async {
-    int index = _queue.indexOf(track);
-    await setIndex(index);
-  }
-
-  void updateTrack(Track track) {
-    int index = _queue.indexOf(track);
-
-    if (index == -1) return;
-
-    _queue[index] = track;
     notifyListeners();
   }
 }
