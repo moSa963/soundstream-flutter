@@ -24,11 +24,13 @@ class _LibraryPageState extends State<LibraryPage> {
           onRefresh: () async => print("todo refresh"),
           child: ListView(
             clipBehavior: Clip.none,
-            
             children: [
               likedTracksItem(),
               Column(
-                children: [for (var playlist in playlists) PlaylistItem(playlist: playlist),],
+                children: [
+                  for (var playlist in playlists)
+                    PlaylistItem(playlist: playlist),
+                ],
               )
             ],
           ),

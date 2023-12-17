@@ -41,7 +41,7 @@ class PlayerControlBar extends StatelessWidget {
   }
 
   void _backward(BuildContext context) async {
-    await context.read<AudioQueueProvider>().backward();
+    await context.read<AudioQueueProvider>().queue.backward();
   }
 
   void _onBackwardTap(BuildContext context) async {
@@ -57,6 +57,6 @@ class PlayerControlBar extends StatelessWidget {
   }
 
   void _forward(BuildContext context) async {
-    await context.read<AudioQueueProvider>().forward();
+    await context.read<AudioQueueProvider>().queue.forward();
   }
 }

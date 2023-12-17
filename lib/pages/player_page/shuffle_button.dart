@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:soundstream_flutter/providers/audio_queue_provider/audio_provider_options.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
+import 'package:soundstream_flutter/providers/audio_queue_provider/tracks_queue.dart';
 import 'package:soundstream_flutter/widgets/button/scale_gesture_detector.dart';
 
 class ShuffleButton extends StatelessWidget {
@@ -15,9 +15,9 @@ class ShuffleButton extends StatelessWidget {
   }
 
   IconData _getIcon(BuildContext context) {
-    final options = context.watch<AudioQueueProvider>().options;
+    final queue = context.watch<AudioQueueProvider>().queue;
 
-    switch (options.seekType) {
+    switch (queue.seekType) {
       case SeekType.linear:
         return Icons.shuffle;
       default:
@@ -26,13 +26,13 @@ class ShuffleButton extends StatelessWidget {
   }
 
   void _handleTap(BuildContext context) {
-    final options = context.read<AudioQueueProvider>().options;
-    switch (options.seekType) {
+    final queue = context.read<AudioQueueProvider>().queue;
+    switch (queue.seekType) {
       case SeekType.linear:
-        options.seekType = SeekType.random;
+        queue.seekType = SeekType.random;
         break;
       default:
-        options.seekType = SeekType.linear;
+        queue.seekType = SeekType.linear;
         break;
     }
   }

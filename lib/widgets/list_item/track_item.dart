@@ -84,6 +84,6 @@ class TrackItem extends StatelessWidget {
   }
 
   void _handleTap(BuildContext context) {
-    context.read<AudioQueueProvider>().setList([track]);
+    context.read<AudioQueueProvider>().queue.setList([track]);
   }
 }

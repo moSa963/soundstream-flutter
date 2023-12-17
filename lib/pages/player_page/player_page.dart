@@ -27,7 +27,7 @@ class PlayerPage extends StatelessWidget {
                   .read<AudioQueueProvider>()
                   .seek(Duration(milliseconds: pos))),
           TracksList(
-            tracks: context.watch<AudioQueueProvider>().queue,
+            tracks: context.watch<AudioQueueProvider>().queue.list,
             updateTrack: (track) => _updateTrack(context, track),
             onTrackDeleted: (v) => _handleTrackDeleted(context, v),
             onTap: (track) => _playTrack(context, track),
@@ -38,14 +38,14 @@ class PlayerPage extends StatelessWidget {
   }
 
   void _playTrack(BuildContext context, Track track) {
-    context.read<AudioQueueProvider>().seekTrack(track);
+    context.read<AudioQueueProvider>().queue.seekTrack(track);
   }
 
   void _updateTrack(BuildContext context, Track track) {
-    context.read<AudioQueueProvider>().updateTrack(track);
+    context.read<AudioQueueProvider>().queue.update(track);
   }
 
   void _handleTrackDeleted(BuildContext context, Track track) {
-    context.read<AudioQueueProvider>().remove(track);
+    context.read<AudioQueueProvider>().queue.remove(track);
   }
 }

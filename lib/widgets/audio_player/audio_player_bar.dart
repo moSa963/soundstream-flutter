@@ -69,7 +69,7 @@ class AudioPlayerBar extends StatelessWidget {
 
   void onPanEnd(BuildContext context, DragEndDetails e) {
     if (e.velocity.pixelsPerSecond.dy > 1000) {
-      context.read<AudioQueueProvider>().setList([]);
+      context.read<AudioQueueProvider>().queue.setList([]);
     }
   }
 }

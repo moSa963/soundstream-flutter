@@ -40,6 +40,7 @@ class TracksList extends StatelessWidget {
   void _handleTap(BuildContext context, Track track) {
     context
         .read<AudioQueueProvider>()
+        .queue
         .setList(tracks, index: tracks.indexOf(track));
   }
 
