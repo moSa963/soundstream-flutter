@@ -8,16 +8,7 @@ class AudioProviderOptions {
     onChange.call();
   }
 
-  SeekType _seekType = SeekType.linear;
-  SeekType get seekType => _seekType;
-  set seekType(SeekType type) {
-    _seekType = type;
-    onChange.call();
-  }
-
   final void Function() onChange;
 }
 
 enum RepeatType { noRepeat, repeatOne, repeat }
-
-enum SeekType { linear, random }
