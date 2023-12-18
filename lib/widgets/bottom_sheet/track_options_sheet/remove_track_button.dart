@@ -6,23 +6,34 @@ import 'package:soundstream_flutter/widgets/dialog/confirmation_dialog.dart';
 
 class RemoveTrackButton extends StatelessWidget {
   const RemoveTrackButton(
-      {super.key, required this.service, required this.track, required this.playlist, this.onRemoved});
+      {super.key,
+      required this.service,
+      required this.track,
+      required this.playlist,
+      this.onRemoved});
   final TrackService service;
   final Track track;
-  final Playlist playlist;
+  final Playlist? playlist;
   final void Function(Track track)? onRemoved;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: () =>  _handleClick(context, playlist.album!),
+        onPressed: () => _handleClick(context),
         child: Text(
-          "Remove from this ${playlist.album ?? false ? 'album' : 'playlist'}",
+          "Remove from this ${playlist?.album ?? false ? 'album' : 'playlist'}",
           style: const TextStyle(color: Colors.red),
         ));
   }
 
-  void _handleClick(BuildContext context, bool fromAlbum) {
+  void _handleClick(BuildContext context) {
+    if (playlist == null) {
+      onRemoved?.call(track);
+      return Navigator.pop(context);
+    }
+
+    final fromAlbum = playlist?.album ?? false;
+
     Navigator.push(
         context,
         DialogRoute(
@@ -38,7 +49,7 @@ class RemoveTrackButton extends StatelessWidget {
               if (fromAlbum) {
                 service.destroy(track);
               } else {
-                service.removeFromPlaylist(playlist, track);
+                service.removeFromPlaylist(playlist!, track);
               }
               onRemoved?.call(track);
               Navigator.pop(context);

@@ -9,7 +9,8 @@ import 'package:soundstream_flutter/widgets/bottom_sheet/track_options_sheet/rem
 import 'package:soundstream_flutter/widgets/dialog/playlists_picker_dialog.dart';
 
 class TrackOptionsSheet extends StatelessWidget {
-  const TrackOptionsSheet({super.key, required this.track, this.playlist, this.onTrackRemoved});
+  const TrackOptionsSheet(
+      {super.key, required this.track, this.playlist, this.onTrackRemoved});
   final Track track;
   final Playlist? playlist;
   final _service = const TrackService();
@@ -22,12 +23,13 @@ class TrackOptionsSheet extends StatelessWidget {
         TextButton(
             onPressed: () => _handleAddToPlaylist(context),
             child: const Text("Add to playlist")),
-        if (playlist != null &&
-            context.watch<AuthProvider>().ownedPlaylist(playlist!))
+        if (onTrackRemoved != null &&
+            (playlist == null ||
+                context.watch<AuthProvider>().ownedPlaylist(playlist!)))
           RemoveTrackButton(
               service: _service,
               track: track,
-              playlist: playlist!,
+              playlist: playlist,
               onRemoved: onTrackRemoved)
       ],
     );

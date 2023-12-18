@@ -71,8 +71,6 @@ class TracksQueue {
   Future<void> _setPointer(int value, {bool reset = false}) async {
     final newPointer = _list.isEmpty ? null : value;
 
-    if (newPointer == _pointer) return;
-
     _pointer = newPointer;
 
     if (reset) {
