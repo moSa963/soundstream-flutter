@@ -6,6 +6,7 @@ class ListItem extends StatelessWidget {
   final List<Widget>? actions;
   final String title;
   final String subtitle;
+  final TextStyle? titleStyle;
   final void Function()? onTap;
   final void Function()? onLongPress;
 
@@ -16,6 +17,7 @@ class ListItem extends StatelessWidget {
     this.subtitle = "",
     this.actions,
     this.onTap,
+    this.titleStyle,
     this.onLongPress,
   });
 
@@ -42,6 +44,7 @@ class ListItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
+                    style: titleStyle,
                     overflow: TextOverflow.ellipsis,
                   ),
                   _subtitle(),

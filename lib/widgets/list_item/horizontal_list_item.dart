@@ -6,6 +6,7 @@ class HorizontalListItem extends StatelessWidget {
   final List<Widget>? actions;
   final String title;
   final String subtitle;
+  final TextStyle? titleStyle;
   final void Function()? onTap;
   final void Function()? onLongPress;
 
@@ -15,6 +16,7 @@ class HorizontalListItem extends StatelessWidget {
     this.leading,
     this.subtitle = "",
     this.actions,
+    this.titleStyle,
     this.onTap,
     this.onLongPress,
   });
@@ -36,6 +38,7 @@ class HorizontalListItem extends StatelessWidget {
                 children: [
                   Text(
                     title,
+                    style: titleStyle,
                     overflow: TextOverflow.ellipsis,
                   ),
                   _subtitle(),
