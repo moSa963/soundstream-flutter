@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:soundstream_flutter/models/track.dart';
 import 'package:soundstream_flutter/providers/audio_queue_provider/audio_queue_provider.dart';
 import 'package:soundstream_flutter/services/likes_service.dart';
+import 'package:soundstream_flutter/widgets/audio_state_icon.dart';
 import 'package:soundstream_flutter/widgets/button/like_button.dart';
 import 'package:soundstream_flutter/widgets/list_item/horizontal_list_item.dart';
 import 'package:soundstream_flutter/widgets/list_item/list_item.dart';
@@ -27,29 +28,41 @@ class TrackItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.watch<AudioQueueProvider>();
+    final active = p.track?.id == track.id ? p.state.playing : null;
+
     if (direction == Axis.horizontal) {
       return HorizontalListItem(
-        onLongPress: onLongPress,
-        onTap: onTap ?? () => _handleTap(context),
-        leading: _leading(),
-        title: track.title,
-        subtitle: track.album?.title ?? "",
-        actions: _actions(),
-      );
+          onLongPress: onLongPress,
+          onTap: onTap ?? () => _handleTap(context),
+          leading: _leading(),
+          title: track.title,
+          subtitle: track.album?.title ?? "",
+          actions: _actions(active),
+          titleStyle: active == null
+              ? null
+              : TextStyle(color: Theme.of(context).colorScheme.primary));
     }
 
     return ListItem(
-      onLongPress: onLongPress,
-      onTap: onTap,
-      leading: _leading(),
-      title: track.title,
-      subtitle: track.album?.title ?? "",
-      actions: _actions(),
-    );
+        onLongPress: onLongPress,
+        onTap: onTap,
+        leading: _leading(),
+        title: track.title,
+        subtitle: track.album?.title ?? "",
+        actions: _actions(active),
+        titleStyle: active == null
+            ? null
+            : TextStyle(color: Theme.of(context).colorScheme.primary));
   }
 
-  List<Widget> _actions() {
+  List<Widget> _actions(bool? active) {
     return [
+      if (active != null)
+        SizedBox(
+          width: 15,
+          child: AudioStateIcon(active: active),
+        ),
       LikeButton(
         liked: track.liked,
         onChange: _like,
