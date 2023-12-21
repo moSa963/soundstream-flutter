@@ -52,6 +52,7 @@ class ListItem extends StatelessWidget {
               ),
             ),
             Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: actions ?? [],
             )
           ],
