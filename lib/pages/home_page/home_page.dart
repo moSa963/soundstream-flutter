@@ -39,46 +39,50 @@ class _HomePageState extends State<HomePage> {
           actions: [
             IconButton(onPressed: () {}, icon: const Icon(Icons.history)),
             IconButton(
-                onPressed: () => _openPage(context, const ProfilePage()), icon: const Icon(Icons.settings))
+                onPressed: () => _openPage(context, const ProfilePage()),
+                icon: const Icon(Icons.settings))
           ],
         ),
-        body: ListView(clipBehavior: Clip.none, children: [
-          const TextTitle("Your Playlsits"),
-          Wrap(
-            children: [
-              for (int i = 0; i < playlists.length; ++i)
-                if (i < 6)
-                  FractionallySizedBox(
-                      widthFactor: .5,
-                      child: PlaylistItem(playlist: playlists[i])),
-            ],
-          ),
-          HorizontalList(
-            title: "You liked",
-            padding: const EdgeInsets.only(top: 25),
-            children: [
-              for (var track in _likedTracks)
-                TrackItem(
-                  track: track,
-                  direction: Axis.horizontal,
-                )
-            ],
-          ),
-          HorizontalList(
-            title: "Latest played",
-            padding: const EdgeInsets.only(top: 25),
-            children: [
-              for (var track in _historyTracks)
-                TrackItem(
-                  track: track,
-                  direction: Axis.horizontal,
-                )
-            ],
-          ),
-        ]));
+        body: RefreshIndicator(
+          onRefresh: _loadData,
+          child: ListView(clipBehavior: Clip.none, children: [
+            const TextTitle("Your Playlsits"),
+            Wrap(
+              children: [
+                for (int i = 0; i < playlists.length; ++i)
+                  if (i < 6)
+                    FractionallySizedBox(
+                        widthFactor: .5,
+                        child: PlaylistItem(playlist: playlists[i])),
+              ],
+            ),
+            HorizontalList(
+              title: "You liked",
+              padding: const EdgeInsets.only(top: 25),
+              children: [
+                for (var track in _likedTracks)
+                  TrackItem(
+                    track: track,
+                    direction: Axis.horizontal,
+                  )
+              ],
+            ),
+            HorizontalList(
+              title: "Latest played",
+              padding: const EdgeInsets.only(top: 25),
+              children: [
+                for (var track in _historyTracks)
+                  TrackItem(
+                    track: track,
+                    direction: Axis.horizontal,
+                  )
+              ],
+            ),
+          ]),
+        ));
   }
 
-  void _loadData() async {
+  Future<void> _loadData() async {
     var likedTracks = await _likesService.likedTracks(count: 6);
 
     setState(() {
