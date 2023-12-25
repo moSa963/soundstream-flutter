@@ -21,7 +21,7 @@ class _LibraryPageState extends State<LibraryPage> {
     return Scaffold(
         appBar: const LibraryPageAppbar(),
         body: RefreshIndicator(
-          onRefresh: () async => print("todo refresh"),
+          onRefresh: _handleRefresh,
           child: ListView(
             clipBehavior: Clip.none,
             children: [
@@ -58,5 +58,9 @@ class _LibraryPageState extends State<LibraryPage> {
         return const LikesPage();
       },
     ));
+  }
+
+  Future<void> _handleRefresh() async {
+    await context.read<PlaylistsProvider>().loadPlaylists();
   }
 }
