@@ -58,8 +58,19 @@ class AudioQueueProvider extends Provider {
 
     _player.playerStateStream.listen((event) {
       _state = event;
+      _handleAudioEnd();
       notifyListeners();
     });
+  }
+
+  void _handleAudioEnd() async {
+    if (player.playerState.processingState == ProcessingState.completed) {
+      if (options.repeatType == RepeatType.repeat) {
+        await queue.forward();
+      } else if (options.repeatType == RepeatType.repeatOne) {
+        await seek(Duration.zero);
+      }
+    }
   }
 
   Future<void> _handleIndexChanged() async {
