@@ -4,6 +4,7 @@ import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/pages/page_layout.dart';
 import 'package:soundstream_flutter/pages/user_page/user_page_header.dart';
 import 'package:soundstream_flutter/providers/auth_provider.dart';
+import 'package:soundstream_flutter/widgets/button/logout_button.dart';
 import 'package:soundstream_flutter/widgets/button/update_profile_image_button.dart';
 import 'package:soundstream_flutter/widgets/text_title.dart';
 import 'package:soundstream_flutter/widgets/theme_switch.dart';
@@ -35,6 +36,7 @@ class ProfilePage extends StatelessWidget {
                   ThemeSwitch(),
                 ],
               ),
+              LogoutButton()
             ],
           ),
         ),
