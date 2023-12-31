@@ -96,4 +96,8 @@ class ApiService {
   Future<Duration?> setAudioPlayerUrl(AudioPlayer player, String url) async {
     return player.setUrl(url, headers: await _getHeaders());
   }
+
+  Future<AudioSource> audioSource(Uri uri) async {
+    return AudioSource.uri(uri, headers: await _getHeaders());
+  }
 }
