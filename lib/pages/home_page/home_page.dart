@@ -85,15 +85,19 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadData() async {
     var likedTracks = await _likesService.likedTracks(count: 6);
 
-    setState(() {
-      _likedTracks = likedTracks;
-    });
+    if (mounted) {
+      setState(() {
+        _likedTracks = likedTracks;
+      });
+    }
 
     var historyTracks = await _historyService.list(count: 6);
 
-    setState(() {
-      _historyTracks = historyTracks;
-    });
+    if (mounted) {
+      setState(() {
+        _historyTracks = historyTracks;
+      });
+    }
   }
 
   void _openPage(BuildContext context, Widget page) {
