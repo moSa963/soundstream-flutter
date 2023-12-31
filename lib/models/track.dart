@@ -1,3 +1,4 @@
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:soundstream_flutter/models/playlist.dart';
 import 'package:soundstream_flutter/models/user.dart';
 import 'package:soundstream_flutter/services/api_service.dart';
@@ -17,7 +18,6 @@ class Track {
   String? image;
 
   Uri get uri => ApiService.uri("tracks/$id/stream");
-
 
   Uri get imgUri => ApiService.uri("tracks/$id/photo/$image");
 
@@ -50,6 +50,17 @@ class Track {
       user: User.fromJson(json['user']),
       createdAt: DateTime.tryParse(json['created_at']),
       addedAt: DateTime.tryParse(json['added_at']),
+    );
+  }
+
+  MediaItem toMediaItem() {
+    return MediaItem(
+      id: id.toString(),
+      title: title,
+      album: album?.title,
+      artUri: imgUri,
+      artist: performedBy,
+      duration: Duration(seconds: duration),
     );
   }
 }
