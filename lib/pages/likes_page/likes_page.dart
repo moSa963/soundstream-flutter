@@ -26,6 +26,7 @@ class _LikesPageState extends State<LikesPage> {
   Widget build(BuildContext context) {
     return PageLayout(
       body: ListView(
+        clipBehavior: Clip.none,
         children: [
           PageBanner(
             title: "Likes",
