@@ -1,24 +1,20 @@
-import 'dart:math';
-
+import 'package:just_audio/just_audio.dart';
 import 'package:soundstream_flutter/models/track.dart';
+import 'package:soundstream_flutter/services/api_service.dart';
 
 enum SeekType { linear, random }
 
 class TracksQueue {
-  TracksQueue({required this.onChange}) {
-    _setSeed();
-  }
+  TracksQueue({required this.onChange});
+  final _api = const ApiService();
 
   List<Track> _list = [];
   List<Track> get list => _list;
 
-  int _start = 0;
+  final AudioPlayer _player = AudioPlayer();
+  AudioPlayer get player => _player;
 
-  int? _pointer;
-
-  int? get index => _getIndex();
-
-  int _seed = 0;
+  int? get index => list.isEmpty ? null : _player.currentIndex;
 
   final Future<void> Function() onChange;
 
@@ -26,88 +22,80 @@ class TracksQueue {
 
   SeekType get seekType => _seekType;
 
+  Track? get track => index == null ? null : _list[index!];
+
   set seekType(SeekType type) {
     if (type == _seekType) return;
-    _seekTypeChanged(_seekType, type);
     _seekType = type;
+    _setSeekType(type);
   }
 
-  int? _getIndex() {
-    if (_pointer == null) return null;
-
-    if (_seekType == SeekType.linear) {
-      return _pointer == null ? null : _pointer! % _list.length;
-    }
-
-    return _pointer == _start ? _start : _getRandomIndex(_pointer!);
-  }
-
-  Future<void> _seekTypeChanged(SeekType oldType, SeekType newType) async {
-    if (oldType == SeekType.random) {
-      _pointer = _getIndex();
-    } else {
-      _setSeed();
-      _start = (_pointer ?? 0) % -list.length;
-    }
-
-    return onChange.call();
-  }
-
-  void _setSeed() {
-    _seed = Random().nextInt(99999999);
-  }
-
-  int _getRandomIndex(int key) {
-    final rand = Random(_seed);
-    int res = 0;
-
-    for (int i = 0; i <= key.abs(); ++i) {
-      res = rand.nextInt(_list.length);
-    }
-
-    return res;
-  }
-
-  Future<void> _setPointer(int value, {bool reset = false}) async {
-    final newPointer = _list.isEmpty ? null : value;
-
-    _pointer = newPointer;
-
-    if (reset) {
-      _start = value;
-    }
-
-    return onChange.call();
+  Future<void> _setSeekType(SeekType newType) async {
+    _player.setShuffleModeEnabled(newType == SeekType.random);
+    await onChange.call();
   }
 
   Future<void> backward() async {
-    return _setPointer((_pointer ?? 0) - 1);
+    await _player.seekToPrevious();
+    await onChange.call();
   }
 
   Future<void> forward() async {
-    return _setPointer((_pointer ?? 0) + 1);
+    await _player.seekToNext();
+    await onChange.call();
   }
 
   Future<void> setList(List<Track> list, {int? index}) async {
-    _list = list;
-    _start = index ?? 0;
-    return _setPointer(index ?? 0);
+    if (list.isEmpty) {
+      await _clear();
+    } else {
+      await _addList(list, initialIndex: index);
+    }
+    await onChange.call();
   }
 
-  Track? getTrack() {
-    return _pointer == null ? null : _list[index!];
+  Future<void> _addList(List<Track> list, {int? initialIndex}) async {
+    _list = list;
+    final List<AudioSource> s = [];
+
+    for (int i = 0; i < list.length; ++i) {
+      s.add(await _api.audioSource(list[i].uri, tag: list[i].toMediaItem()));
+    }
+
+    await _player.stop();
+    await player.setAudioSource(ConcatenatingAudioSource(children: s),
+        initialIndex: initialIndex);
+  }
+
+  Future<void> _clear() async {
+    _list = [];
+    await _player.stop();
   }
 
   Future<void> add(Track track) async {
-    list.add(track);
-    return onChange.call();
+    final list = _player.audioSource as ConcatenatingAudioSource;
+    _list.add(track);
+    await list.add(await _api.audioSource(track.uri));
+    return await onChange.call();
   }
 
   Future<void> remove(Track track) async {
-    int index = list.indexOf(track);
+    int index = _list.indexOf(track);
     if (index == -1) return;
-    list.removeAt(index);
-    return _setPointer(_pointer ?? 0);
+
+    if (_list.length == 1) {
+      return _clear();
+    }
+
+    final audioSource = _player.audioSource as ConcatenatingAudioSource;
+
+    if ((_player.currentIndex ?? 0) >= _list.length - 1) {
+      await _player.seek(Duration.zero, index: _list.length - 2);
+    }
+    _list.removeAt(index);
+    await audioSource.removeAt(index);
+
+    await onChange.call();
   }
 
   Future<void> update(Track track) async {
@@ -117,12 +105,24 @@ class TracksQueue {
 
     list[index] = track;
 
-    return onChange.call();
+    return await onChange.call();
   }
 
   Future<void> seekTrack(Track track) async {
-    int index = list.indexOf(track);
-    if (index == -1) return;
-    return _setPointer(index, reset: true);
+    int i = list.indexOf(track);
+    await seekIndex(i);
+    await onChange.call();
+  }
+
+  Future<void> seekIndex(int i) async {
+    if (i < 0 || i >= list.length) {
+      return;
+    }
+
+    await _player.seek(Duration.zero, index: i);
+  }
+
+  Future<void> dispose() async {
+    await _player.dispose();
   }
 }

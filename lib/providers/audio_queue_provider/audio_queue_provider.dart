@@ -21,50 +21,46 @@ class AudioQueueProvider extends Provider {
   Duration? _position;
   Duration? get position => _position;
 
-  final AudioPlayer _player = AudioPlayer();
-  AudioPlayer get player => _player;
-
   PlayerState _state = PlayerState(false, ProcessingState.idle);
   PlayerState get state => _state;
 
   int? get index => _queue.index;
 
-  Track? _track;
-  Track? get track => _track;
+  Track? get track => _queue.track;
+
+  AudioPlayer get player => _queue.player;
 
   late AudioProviderOptions options;
 
   AudioQueueProvider() {
     options = AudioProviderOptions(onChange: () => notifyListeners());
 
-    _queue = TracksQueue(onChange: () async {
-      if (_queue.getTrack()?.id != track?.id) {
-        _track = _queue.getTrack();
-        await _handleIndexChanged();
-      }
+    _queue = TracksQueue(onChange: () async => notifyListeners());
 
-      notifyListeners();
-    });
-
-    _player.durationStream.listen((event) {
+    _queue.player.durationStream.listen((event) {
       _duration = event;
       notifyListeners();
     });
 
-    _player.positionStream.listen((event) {
+    _queue.player.positionStream.listen((event) {
       _position = event;
       notifyListeners();
     });
 
-    _player.playerStateStream.listen((event) {
+    _queue.player.playerStateStream.listen((event) async {
       _state = event;
-      _handleAudioEnd();
+      await _handleAudioEnd();
+      notifyListeners();
+    });
+
+    _queue.player.currentIndexStream.listen((event) {
       notifyListeners();
     });
   }
 
-  void _handleAudioEnd() async {
-    if (player.playerState.processingState == ProcessingState.completed) {
+  Future<void> _handleAudioEnd() async {
+    if (_queue.player.playerState.processingState ==
+        ProcessingState.completed) {
       if (options.repeatType == RepeatType.repeat) {
         await queue.forward();
       } else if (options.repeatType == RepeatType.repeatOne) {
@@ -73,28 +69,19 @@ class AudioQueueProvider extends Provider {
     }
   }
 
-  Future<void> _handleIndexChanged() async {
-    await _player.stop();
-
-    if (index == null) return;
-
-    await api.setAudioPlayerUrl(_player, track!.uri.toString());
-    await _player.play();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _player.dispose();
-  }
-
   Future<void> reset() async {
-    await _player.seek(Duration.zero);
+    await _queue.player.seek(Duration.zero);
   }
 
   Future<void> seek(Duration pos) async {
-    player.seek(pos);
-    _position = player.position;
+    await _queue.player.seek(pos);
+    _position = _queue.player.position;
     notifyListeners();
+  }
+
+  @override
+  void dispose() async {
+    await _queue.dispose();
+    super.dispose();
   }
 }
