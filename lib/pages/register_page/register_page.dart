@@ -24,15 +24,21 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: LogoBanner(title: "SoundStream", maxHeight: 100, direction: _index == 0 ? Axis.vertical : Axis.horizontal),
-            ),
             Expanded(
-              child: Center(
-                child: SingleChildScrollView(
-                  child: _getForm(),
-                ),
+              child: ListView(
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 50),
+                      child: LogoBanner(
+                          title: "SoundStream",
+                          maxHeight: 100,
+                          direction:
+                              _index == 0 ? Axis.vertical : Axis.horizontal),
+                    ),
+                  ),
+                  _getForm()
+                ],
               ),
             ),
             _navText()
