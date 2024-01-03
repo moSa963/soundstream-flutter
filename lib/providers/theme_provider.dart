@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:soundstream_flutter/providers/provider.dart';
 
 class ThemeProvider extends Provider {
-  ThemeMode _themeMode;
+  late ThemeMode _themeMode;
   ThemeMode get themeMode => _themeMode;
 
-  ThemeProvider() : _themeMode = ThemeMode.dark;
+  bool _useDeviceTheme = true;
+  bool get useDeviceTheme => _useDeviceTheme;
+
+  set useDeviceTheme(bool val) {
+    _useDeviceTheme = val;
+    final platformDark =
+        SchedulerBinding.instance.platformDispatcher.platformBrightness ==
+            Brightness.dark;
+
+    if (!val) return;
+
+    setThemeMode(platformDark ? ThemeMode.dark : ThemeMode.light);
+  }
+
+  ThemeProvider() {
+    _themeMode = ThemeMode.dark;
+    useDeviceTheme = true;
+  }
 
   void setThemeMode(ThemeMode mode) {
     if (mode == _themeMode) return;
