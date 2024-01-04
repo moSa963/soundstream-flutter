@@ -69,6 +69,7 @@ class TracksQueue {
 
   Future<void> _clear() async {
     _list = [];
+    await _player.setAudioSource(ConcatenatingAudioSource(children: []));
     await _player.stop();
   }
 
